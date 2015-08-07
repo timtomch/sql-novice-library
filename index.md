@@ -31,12 +31,13 @@ data, item management, and an authority file.
 2.  [Sorting and Removing Duplicates](02-sort-dup.html)
 3.  [Filtering](03-filter.html)
 4.  [Calculating New Values](04-calc.html)
-5.  [Missing Data](05-null.html)
+<!---5.  [Missing Data](05-null.html)
 6.  [Aggregation](06-agg.html)
 7.  [Combining Data](07-join.html)
 8.  [Data Hygiene](08-hygiene.html)
 9.  [Creating and Modifying Data](09-create.html)
 10. [Programming with Databases](10-prog.html)
+-->
 
 ## Other Resources
 

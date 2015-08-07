@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Databases and SQL
+title: Databases and SQL - Library edition
 subtitle: Missing Data
 minutes: 30
 ---
