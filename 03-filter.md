@@ -816,14 +816,15 @@ not to the entire rows as they are being processed.
 > and run our queries against that,
 > or to fill a small database with synthesized records.
 > For example,
-> instead of trying our queries against an actual database of 20 million Australians,
+> instead of trying our queries against an actual database of 20 million bibliographic records,
 > we could run it against a sample of ten thousand,
 > or write a small program to generate ten thousand random (but plausible) records
 > and use that.
 
 > ## Weeding the Library by Date {.challenge}
 >
-> The library wants to weed its collection and you need to review all books published after 2004 (earlier books have already been reviewed) but > before 2010. Write a query that selects the titles that need to be reviewed.
+> The library wants to weed its collection and you need to review all books published after 2004 (earlier books have already been reviewed) 
+> but before 2010. Write a query that selects the titles that need to be reviewed.
 
 
 > ## Finding Recent Titles on SQL {.challenge}
