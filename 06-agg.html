@@ -30,7 +30,7 @@
           <h2 class="subtitle">Aggregation</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
@@ -41,464 +41,884 @@
 </ul>
 </div>
 </section>
-<p>We now want to calculate ranges and averages for our data. We know how to select all of the dates from the <code>Visited</code> table:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> dated <span class="kw">FROM</span> Visited;</code></pre>
+<p>To get an estimate of the amount of time it will take to digitize our collection, we now want to know how many books by a given publisher are in our collection, as well as calculate the total number of pages contained in the collection. We know how to select all of the page numbers from the <code>Works</code> table:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Pages <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">dated</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1927-02-08</td>
-</tr>
-<tr class="even">
-<td align="left">1927-02-10</td>
-</tr>
-<tr class="odd">
-<td align="left">1930-01-07</td>
-</tr>
-<tr class="even">
-<td align="left">1930-01-12</td>
-</tr>
-<tr class="odd">
-<td align="left">1930-02-26</td>
-</tr>
-<tr class="even">
-<td align="left">-null-</td>
-</tr>
-<tr class="odd">
-<td align="left">1932-01-14</td>
-</tr>
-<tr class="even">
-<td align="left">1932-03-22</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Pages
+</TH>
+</TR>
+<TR>
+<TD>
+578
+</TD>
+</TR>
+<TR>
+<TD>
+-null-
+</TD>
+</TR>
+<TR>
+<TD>
+532
+</TD>
+</TR>
+<TR>
+<TD>
+503
+</TD>
+</TR>
+<TR>
+<TD>
+258
+</TD>
+</TR>
+<TR>
+<TD>
+685
+</TD>
+</TR>
+<TR>
+<TD>
+534
+</TD>
+</TR>
+<TR>
+<TD>
+400
+</TD>
+</TR>
+<TR>
+<TD>
+460
+</TD>
+</TR>
+<TR>
+<TD>
+309
+</TD>
+</TR>
+<TR>
+<TD>
+857
+</TD>
+</TR>
+<TR>
+<TD>
+320
+</TD>
+</TR>
+<TR>
+<TD>
+440
+</TD>
+</TR>
+<TR>
+<TD>
+218
+</TD>
+</TR>
+<TR>
+<TD>
+501
+</TD>
+</TR>
+<TR>
+<TD>
+-null-
+</TD>
+</TR>
+<TR>
+<TD>
+708
+</TD>
+</TR>
+<TR>
+<TD>
+760
+</TD>
+</TR>
+<TR>
+<TD>
+691
+</TD>
+</TR>
+<TR>
+<TD>
+321
+</TD>
+</TR>
 </table>
-<p>but to combine them, we must use an <a href="reference.html#aggregation-function">aggregation function</a> such as <code>min</code> or <code>max</code>. Each of these functions takes a set of records as input, and produces a single record as output:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited;</code></pre>
+<p>but to combine them, we must use an <a href="reference.html#aggregation-function">aggregation function</a> such as <code>min</code> or <code>max</code>. Each of these functions takes a set of records as input, and produces a single record as output. For example, the following statements display the smallest and the largest books in our collection:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">min(dated)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1927-02-08</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Title
+</TH>
+<TH>
+min(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+Beginning SQL queries
+</TD>
+<TD>
+218
+</TD>
+</TR>
 </table>
-<p><img src="fig/sql-aggregation.svg" alt="SQL Aggregation" /></p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">max</span>(dated) <span class="kw">FROM</span> Visited;</code></pre>
+<!--<img src="fig/sql-aggregation.svg" alt="SQL Aggregation" />-->
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">max(dated)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1932-03-22</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Title
+</TH>
+<TH>
+max(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+SQL bible
+</TD>
+<TD>
+857
+</TD>
+</TR>
 </table>
 <p><code>min</code> and <code>max</code> are just two of the aggregation functions built into SQL. Three others are <code>avg</code>, <code>count</code>, and <code>sum</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;sal&#39;</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">avg</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">avg(reading)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">7.20333333333333</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+avg(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+504.166666666667
+</TD>
+</TR>
 </table>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">count</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;sal&#39;</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">count(reading)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">9</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+count(Title)
+</TH>
+</TR>
+<TR>
+<TD>
+7
+</TD>
+</TR>
 </table>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">sum</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;sal&#39;</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">sum(reading)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">64.83</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+sum(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+3666
+</TD>
+</TR>
 </table>
-<p>We used <code>count(reading)</code> here, but we could just as easily have counted <code>quant</code> or any other field in the table, or even used <code>count(*)</code>, since the function doesn’t care about the values themselves, just how many values there are.</p>
-<p>SQL lets us do several aggregations at once. We can, for example, find the range of sensible salinity measurements:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(reading), <span class="fu">max</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;sal&#39;</span> <span class="kw">AND</span> reading&lt;=<span class="fl">1.0</span>;</code></pre>
+<p>We used <code>count(Title)</code> here, but we could just as easily have counted <code>ISBN</code> or any other field in the table, or even used <code>count(*)</code>, since the function doesn’t care about the values themselves, just how many values there are.</p>
+<p>SQL lets us do several aggregations at once. We can, for example, find the range of book sizes published by O’Reilly:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">min(reading)</th>
-<th align="left">max(reading)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">0.05</td>
-<td align="left">0.21</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+min(Pages)
+</TH>
+<TH>
+max(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+320
+</TD>
+<TD>
+691
+</TD>
+</TR>
 </table>
 <p>We can also combine aggregated results with raw results, although the output might surprise you:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> person, <span class="fu">count</span>(*) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;sal&#39;</span> <span class="kw">AND</span> reading&lt;=<span class="fl">1.0</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">count</span>(*) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">count(*)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">lake</td>
-<td align="left">7</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Title
+</TH>
+<TH>
+count(*)
+</TH>
+</TR>
+<TR>
+<TD>
+MySQL in a nutshell
+</TD>
+<TD>
+6
+</TD>
+</TR>
 </table>
-<p>Why does Lake’s name appear rather than Roerich’s or Dyer’s? The answer is that when it has to aggregate a field, but isn’t told how to, the database manager chooses an actual value from the input set. It might use the first one processed, the last one, or something else entirely.</p>
+<p>Why does this title appear rather than any other published by O’Reilly? The answer is that when it has to aggregate a field, but isn’t told how to, the database manager chooses an actual value from the input set. It might use the first one processed, the last one, or something else entirely.</p>
 <p>Another important fact is that when there are no values to aggregate — for example, where there are no rows satisfying the <code>WHERE</code> clause — aggregation’s result is “don’t know” rather than zero or some other arbitrary value:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> person, <span class="fu">max</span>(reading), <span class="fu">sum</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;missing&#39;</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Hachette&#39;</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">max(reading)</th>
-<th align="left">sum(reading)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">-null-</td>
-<td align="left">-null-</td>
-<td align="left">-null-</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+min(Pages)
+</TH>
+<TH>
+max(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+-null-
+</TD>
+<TD>
+-null-
+</TD>
+</TR>
 </table>
 <p>One final important feature of aggregation functions is that they are inconsistent with the rest of SQL in a very useful way. If we add two values, and one of them is null, the result is null. By extension, if we use <code>sum</code> to add all the values in a set, and any of those values are null, the result should also be null. It’s much more useful, though, for aggregation functions to ignore null values and only combine those that are non-null. This behavior lets us write our queries as:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">min(dated)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1927-02-08</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Title
+</TH>
+<TH>
+min(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+Beginning SQL queries
+</TD>
+<TD>
+218
+</TD>
+</TR>
 </table>
 <p>instead of always having to filter explicitly:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(dated) <span class="kw">FROM</span> Visited <span class="kw">WHERE</span> dated <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">min(dated)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1927-02-08</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Title
+</TH>
+<TH>
+min(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+Beginning SQL queries
+</TD>
+<TD>
+218
+</TD>
+</TR>
 </table>
-<p>Aggregating all records at once doesn’t always make sense. For example, suppose Gina suspects that there is a systematic bias in her data, and that some scientists’ radiation readings are higher than others. We know that this doesn’t work:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)
-<span class="kw">FROM</span>  Survey
-<span class="kw">WHERE</span> quant=<span class="st">&#39;rad&#39;</span>;</code></pre>
+<p>Aggregating all records at once doesn’t always make sense. For example, if we want to get a breakdown of how many books are in the collection for each publisher, we cannot write:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">count(reading)</th>
-<th align="left">round(avg(reading), 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">roe</td>
-<td align="left">8</td>
-<td align="left">6.56</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Publisher
+</TH>
+<TH>
+count(Title)
+</TH>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+20
+</TD>
+</TR>
 </table>
-<p>because the database manager selects a single arbitrary scientist’s name rather than aggregating separately for each scientist. Since there are only five scientists, she could write five queries of the form:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)
-<span class="kw">FROM</span>  Survey
-<span class="kw">WHERE</span> quant=<span class="st">&#39;rad&#39;</span>
-<span class="kw">AND</span>   person=<span class="st">&#39;dyer&#39;</span>;</code></pre>
+<p>because the database manager selects a single arbitrary publisher name rather than aggregating results separately for each publisher. Since in our small example there are only ten different publishers, we could write ten queries of the form:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Faber &amp; Faber&#39;</span>;</code></pre>
+<p>but this would be tedious, and it wouldn’t be practical against a real-life database containing many thousands different publishers.</p>
+<p>What we need to do is tell the database manager to aggregate the number of titles for each publisher separately using a <code>GROUP BY</code> clause:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">count(reading)</th>
-<th align="left">round(avg(reading), 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">dyer</td>
-<td align="left">2</td>
-<td align="left">8.81</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Publisher
+</TH>
+<TH>
+count(Title)
+</TH>
+</TR>
+<TR>
+<TD>
+Apress
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Belknap Press
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Faber &amp; Faber
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+McGraw-Hill
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+6
+</TD>
+</TR>
+<TR>
+<TD>
+Peachpit
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Sams
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+South-Western
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+7
+</TD>
+</TR>
 </table>
-<p>but this would be tedious, and if she ever had a data set with fifty or five hundred scientists, the chances of her getting all of those queries right is small.</p>
-<p>What we need to do is tell the database manager to aggregate the hours for each scientist separately using a <code>GROUP BY</code> clause:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   person, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)
-<span class="kw">FROM</span>     Survey
-<span class="kw">WHERE</span>    quant=<span class="st">&#39;rad&#39;</span>
-<span class="kw">GROUP</span> <span class="kw">BY</span> person;</code></pre>
+<p><code>GROUP BY</code> does exactly what its name implies: groups all the records with the same value for the specified field together so that aggregation can process each batch separately. Since all the records in each batch have the same value for <code>Publisher</code>, it no longer matters that the database manager is picking an arbitrary one to display alongside the count of <code>Title</code> values.</p>
+<p>Just as we can sort by multiple criteria at once, we can also group by multiple criteria. To get a yearly breakdown of the number of titles published by each publisher, we just add another field to the <code>GROUP BY</code> clause:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher, <span class="dt">Date</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">count(reading)</th>
-<th align="left">round(avg(reading), 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">dyer</td>
-<td align="left">2</td>
-<td align="left">8.81</td>
-</tr>
-<tr class="even">
-<td align="left">lake</td>
-<td align="left">2</td>
-<td align="left">1.82</td>
-</tr>
-<tr class="odd">
-<td align="left">pb</td>
-<td align="left">3</td>
-<td align="left">6.66</td>
-</tr>
-<tr class="even">
-<td align="left">roe</td>
-<td align="left">1</td>
-<td align="left">11.25</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Publisher
+</TH>
+<TH>
+Date
+</TH>
+<TH>
+count(Title)
+</TH>
+</TR>
+<TR>
+<TD>
+Apress
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Belknap Press
+</TD>
+<TD>
+2014
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Faber &amp; Faber
+</TD>
+<TD>
+2014
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+McGraw-Hill
+</TD>
+<TD>
+2009
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2004
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2009
+</TD>
+<TD>
+2
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2010
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2013
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Peachpit
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Sams
+</TD>
+<TD>
+2013
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+South-Western
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2010
+</TD>
+<TD>
+1
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2011
+</TD>
+<TD>
+2
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2013
+</TD>
+<TD>
+2
+</TD>
+</TR>
 </table>
-<p><code>GROUP BY</code> does exactly what its name implies: groups all the records with the same value for the specified field together so that aggregation can process each batch separately. Since all the records in each batch have the same value for <code>person</code>, it no longer matters that the database manager is picking an arbitrary one to display alongside the aggregated <code>reading</code> values.</p>
-<p>Just as we can sort by multiple criteria at once, we can also group by multiple criteria. To get the average reading by scientist and quantity measured, for example, we just add another field to the <code>GROUP BY</code> clause:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   person, quant, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)
-<span class="kw">FROM</span>     Survey
-<span class="kw">GROUP</span> <span class="kw">BY</span> person, quant;</code></pre>
+<p>Note that we have added <code>Date</code> to the list of fields displayed, since the results wouldn’t make much sense otherwise.</p>
+<p>Let’s wrap up our collection analysis query:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title), <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works 
+<span class="kw">WHERE</span>    Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> 
+<span class="kw">GROUP</span> <span class="kw">BY</span> Publisher, <span class="dt">Date</span> 
+<span class="kw">ORDER</span> <span class="kw">BY</span> Publisher <span class="kw">ASC</span>, <span class="dt">Date</span> <span class="kw">DESC</span>;</code></pre>
 <table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">quant</th>
-<th align="left">count(reading)</th>
-<th align="left">round(avg(reading), 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">-null-</td>
-<td align="left">sal</td>
-<td align="left">1</td>
-<td align="left">0.06</td>
-</tr>
-<tr class="even">
-<td align="left">-null-</td>
-<td align="left">temp</td>
-<td align="left">1</td>
-<td align="left">-26.0</td>
-</tr>
-<tr class="odd">
-<td align="left">dyer</td>
-<td align="left">rad</td>
-<td align="left">2</td>
-<td align="left">8.81</td>
-</tr>
-<tr class="even">
-<td align="left">dyer</td>
-<td align="left">sal</td>
-<td align="left">2</td>
-<td align="left">0.11</td>
-</tr>
-<tr class="odd">
-<td align="left">lake</td>
-<td align="left">rad</td>
-<td align="left">2</td>
-<td align="left">1.82</td>
-</tr>
-<tr class="even">
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">4</td>
-<td align="left">0.11</td>
-</tr>
-<tr class="odd">
-<td align="left">lake</td>
-<td align="left">temp</td>
-<td align="left">1</td>
-<td align="left">-16.0</td>
-</tr>
-<tr class="even">
-<td align="left">pb</td>
-<td align="left">rad</td>
-<td align="left">3</td>
-<td align="left">6.66</td>
-</tr>
-<tr class="odd">
-<td align="left">pb</td>
-<td align="left">temp</td>
-<td align="left">2</td>
-<td align="left">-20.0</td>
-</tr>
-<tr class="even">
-<td align="left">roe</td>
-<td align="left">rad</td>
-<td align="left">1</td>
-<td align="left">11.25</td>
-</tr>
-<tr class="odd">
-<td align="left">roe</td>
-<td align="left">sal</td>
-<td align="left">2</td>
-<td align="left">32.05</td>
-</tr>
-</tbody>
-</table>
-<p>Note that we have added <code>quant</code> to the list of fields displayed, since the results wouldn’t make much sense otherwise.</p>
-<p>Let’s go one step further and remove all the entries where we don’t know who took the measurement:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   person, quant, <span class="fu">count</span>(reading), <span class="fu">round</span>(<span class="fu">avg</span>(reading), <span class="dv">2</span>)
-<span class="kw">FROM</span>     Survey
-<span class="kw">WHERE</span>    person <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
-<span class="kw">GROUP</span> <span class="kw">BY</span> person, quant
-<span class="kw">ORDER</span> <span class="kw">BY</span> person, quant;</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">person</th>
-<th align="left">quant</th>
-<th align="left">count(reading)</th>
-<th align="left">round(avg(reading), 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">dyer</td>
-<td align="left">rad</td>
-<td align="left">2</td>
-<td align="left">8.81</td>
-</tr>
-<tr class="even">
-<td align="left">dyer</td>
-<td align="left">sal</td>
-<td align="left">2</td>
-<td align="left">0.11</td>
-</tr>
-<tr class="odd">
-<td align="left">lake</td>
-<td align="left">rad</td>
-<td align="left">2</td>
-<td align="left">1.82</td>
-</tr>
-<tr class="even">
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">4</td>
-<td align="left">0.11</td>
-</tr>
-<tr class="odd">
-<td align="left">lake</td>
-<td align="left">temp</td>
-<td align="left">1</td>
-<td align="left">-16.0</td>
-</tr>
-<tr class="even">
-<td align="left">pb</td>
-<td align="left">rad</td>
-<td align="left">3</td>
-<td align="left">6.66</td>
-</tr>
-<tr class="odd">
-<td align="left">pb</td>
-<td align="left">temp</td>
-<td align="left">2</td>
-<td align="left">-20.0</td>
-</tr>
-<tr class="even">
-<td align="left">roe</td>
-<td align="left">rad</td>
-<td align="left">1</td>
-<td align="left">11.25</td>
-</tr>
-<tr class="odd">
-<td align="left">roe</td>
-<td align="left">sal</td>
-<td align="left">2</td>
-<td align="left">32.05</td>
-</tr>
-</tbody>
+<TR>
+<TH>
+Publisher
+</TH>
+<TH>
+Date
+</TH>
+<TH>
+count(Title)
+</TH>
+<TH>
+sum(Pages)
+</TH>
+</TR>
+<TR>
+<TD>
+Apress
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+<TD>
+218
+</TD>
+</TR>
+<TR>
+<TD>
+Belknap Press
+</TD>
+<TD>
+2014
+</TD>
+<TD>
+1
+</TD>
+<TD>
+685
+</TD>
+</TR>
+<TR>
+<TD>
+Faber &amp; Faber
+</TD>
+<TD>
+2014
+</TD>
+<TD>
+1
+</TD>
+<TD>
+258
+</TD>
+</TR>
+<TR>
+<TD>
+McGraw-Hill
+</TD>
+<TD>
+2009
+</TD>
+<TD>
+1
+</TD>
+<TD>
+534
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2013
+</TD>
+<TD>
+1
+</TD>
+<TD>
+532
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2010
+</TD>
+<TD>
+1
+</TD>
+<TD>
+503
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2009
+</TD>
+<TD>
+2
+</TD>
+<TD>
+898
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+<TD>
+321
+</TD>
+</TR>
+<TR>
+<TD>
+O'Reilly
+</TD>
+<TD>
+2004
+</TD>
+<TD>
+1
+</TD>
+<TD>
+691
+</TD>
+</TR>
+<TR>
+<TD>
+Peachpit
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+<TD>
+460
+</TD>
+</TR>
+<TR>
+<TD>
+South-Western
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+<TD>
+309
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2013
+</TD>
+<TD>
+1
+</TD>
+<TD>
+760
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2011
+</TD>
+<TD>
+2
+</TD>
+<TD>
+1108
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2010
+</TD>
+<TD>
+1
+</TD>
+<TD>
+440
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2008
+</TD>
+<TD>
+1
+</TD>
+<TD>
+857
+</TD>
+</TR>
+<TR>
+<TD>
+Wiley
+</TD>
+<TD>
+2005
+</TD>
+<TD>
+1
+</TD>
+<TD>
+501
+</TD>
+</TR>
 </table>
 <p>Looking more closely, this query:</p>
 <ol style="list-style-type: decimal">
-<li><p>selected records from the <code>Survey</code> table where the <code>person</code> field was not null;</p></li>
-<li><p>grouped those records into subsets so that the <code>person</code> and <code>quant</code> values in each subset were the same;</p></li>
-<li><p>ordered those subsets first by <code>person</code>, and then within each sub-group by <code>quant</code>; and</p></li>
-<li><p>counted the number of records in each subset, calculated the average <code>reading</code> in each, and chose a <code>person</code> and <code>quant</code> value from each (it doesn’t matter which ones, since they’re all equal).</p></li>
+<li><p>selected records from the <code>Works</code> table where the <code>Pages</code> field was not null;</p></li>
+<li><p>grouped those records into subsets so that the <code>Publisher</code>and <code>Date</code> values in each subset were the same;</p></li>
+<li><p>ordered those subsets first by <code>Publisher</code>, and then within each sub-group by `Date; and</p></li>
+<li><p>counted the number of records in each subset, calculated the sum of <code>Pages</code> in each, and chose a <code>Publisher</code> and <code>Date</code> value from each to display (it doesn’t matter which ones, since they’re all equal in each subset)</p></li>
 </ol>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Counting Temperature Readings</h2>
+<h2 id="counting-books-published-in-2011"><span class="glyphicon glyphicon-pencil"></span>Counting Books Published in 2011</h2>
 </div>
 <div class="panel-body">
-<p>How many temperature readings did Frank Pabodie record, and what was their average value?</p>
+<p>How many books were published in 2011, and what was their average length?</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Averaging with NULL</h2>
+<h2 id="averaging-with-null"><span class="glyphicon glyphicon-pencil"></span>Averaging with NULL</h2>
 </div>
 <div class="panel-body">
-<p>The average of a set of values is the sum of the values divided by the number of values. Does this mean that the <code>avg</code> function returns 2.0 or 3.0 when given the values 1.0, <code>null</code>, and 5.0?</p>
+<p>The average of a set of values is the sum of the values divided by the number of values. Does this mean that the <code>avg</code>function returns 2.0 or 3.0 when given the values 1.0, <code>NULL</code>, and 5.0?</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>What Does This Query Do?</h2>
+<h2 id="ordering-when-concatenating"><span class="glyphicon glyphicon-pencil"></span>Ordering When Concatenating</h2>
 </div>
 <div class="panel-body">
-<p>We want to calculate the difference between each individual radiation reading and the average of all the radiation readings. We write the query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> reading - <span class="fu">avg</span>(reading) <span class="kw">FROM</span> Survey <span class="kw">WHERE</span> quant=<span class="st">&#39;rad&#39;</span>;</code></pre>
-<p>What does this actually produce, and why?</p>
-</div>
-</section>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Ordering When Concatenating</h2>
-</div>
-<div class="panel-body">
-<p>The function <code>group_concat(field, separator)</code> concatenates all the values in a field using the specified separator character (or ‘,’ if the separator isn’t specified). Use this to produce a one-line list of scientists’ names, such as:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql">William Dyer, Frank Pabodie, Anderson Lake, Valentina Roerich, Frank Danforth</code></pre>
-<p>Can you find a way to order the list by surname?</p>
+<p>The function <code>group_concat(field, separator)</code> concatenates all the values in a field using the specified separator character (or ‘,’ if the separator isn’t specified). Use this to produce a one-line list of publishers’ names, such as:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql">O<span class="st">&#39;Reilly, Wiley, Faber </span><span class="ch">&amp;amp</span><span class="st">; Faber, Belknap Press, ...</span></code></pre>
+<p>Can you find a way to order the list alphabetically?</p>
 </div>
 </section>
         </div>
