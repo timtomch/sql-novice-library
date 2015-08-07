@@ -18,172 +18,538 @@ Dealing with `null` requires a few special tricks
 and some careful thinking.
 
 To start,
-let's have a look at the `Visited` table.
-There are eight records,
-but #752 doesn't have a date --- or rather,
-its date is null:
+let's have a look at the `Works` table.
+There are a total of 20 records. The page number is missing for records #2 and #26 --— for them, the `Pages` field is null:
+
 
 ~~~ {.sql}
-SELECT * FROM Visited;
+SELECT Work_ID, Title, Pages FROM Works;
 ~~~
 
-|ident|site|dated     |
-|-----|----|----------|
-|619  |DR-1|1927-02-08|
-|622  |DR-1|1927-02-10|
-|734  |DR-3|1930-01-07|
-|735  |DR-3|1930-01-12|
-|751  |DR-3|1930-02-26|
-|752  |DR-3|-null-    |
-|837  |MSK-|1932-01-14|
-|844  |DR-1|1932-03-22|
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>1</TD>
+<TD>SQL in a nutshell</TD>
+<TD>578</TD>
+</TR>
+<TR><TD>2</TD>
+<TD>SQL for dummies</TD>
+<TD>-null-</TD>
+</TR>
+<TR><TD>3</TD>
+<TD>PHP &amp; MySQL</TD>
+<TD>532</TD>
+</TR>
+<TR><TD>4</TD>
+<TD>Using SQLite</TD>
+<TD>503</TD>
+</TR>
+<TR><TD>5</TD>
+<TD>Geek sublime</TD>
+<TD>258</TD>
+</TR>
+<TR><TD>6</TD>
+<TD>Capital in the 21st century</TD>
+<TD>685</TD>
+</TR>
+<TR><TD>7</TD>
+<TD>SQL</TD>
+<TD>534</TD>
+</TR>
+<TR><TD>8</TD>
+<TD>Discovering SQL</TD>
+<TD>400</TD>
+</TR>
+<TR><TD>9</TD>
+<TD>SQL</TD>
+<TD>460</TD>
+</TR>
+<TR><TD>10</TD>
+<TD>A guide to SQL</TD>
+<TD>309</TD>
+</TR>
+<TR><TD>11</TD>
+<TD>SQL bible</TD>
+<TD>857</TD>
+</TR>
+<TR><TD>12</TD>
+<TD>Learning SQL</TD>
+<TD>320</TD>
+</TR>
+<TR><TD>13</TD>
+<TD>SQL for dummies</TD>
+<TD>440</TD>
+</TR>
+<TR><TD>14</TD>
+<TD>Beginning SQL queries</TD>
+<TD>218</TD>
+</TR>
+<TR><TD>15</TD>
+<TD>Beginning SQL</TD>
+<TD>501</TD>
+</TR>
+<TR><TD>16</TD>
+<TD>Microsoft SQL server 2012</TD>
+<TD>-null-</TD>
+</TR>
+<TR><TD>17</TD>
+<TD>SQL all-in-one</TD>
+<TD>708</TD>
+</TR>
+<TR><TD>18</TD>
+<TD>Access 2013 all-in-one</TD>
+<TD>760</TD>
+</TR>
+<TR><TD>19</TD>
+<TD>SQL in a nutshell</TD>
+<TD>691</TD>
+</TR>
+<TR><TD>20</TD>
+<TD>MySQL in a nutshell</TD>
+<TD>321</TD>
+</TR>
+</table>
 
 Null doesn't behave like other values.
-If we select the records that come before 1930:
+If we select the works that have less than 300 pages:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated<'1930-01-01';
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages<300;
 ~~~
 
-|ident|site|dated     |
-|-----|----|----------|
-|619  |DR-1|1927-02-08|
-|622  |DR-1|1927-02-10|
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>5</TD>
+<TD>Geek sublime</TD>
+<TD>258</TD>
+</TR>
+<TR><TD>14</TD>
+<TD>Beginning SQL queries</TD>
+<TD>218</TD>
+</TR>
+</table>
 
 we get two results,
-and if we select the ones that come during or after 1930:
+and if we select the ones that have 300 or more pages:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated>='1930-01-01';
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages>=300;
 ~~~
 
-|ident|site|dated     |
-|-----|----|----------|
-|734  |DR-3|1930-01-07|
-|735  |DR-3|1930-01-12|
-|751  |DR-3|1930-02-26|
-|837  |MSK-|1932-01-14|
-|844  |DR-1|1932-03-22|
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>1</TD>
+<TD>SQL in a nutshell</TD>
+<TD>578</TD>
+</TR>
+<TR><TD>3</TD>
+<TD>PHP &amp; MySQL</TD>
+<TD>532</TD>
+</TR>
+<TR><TD>4</TD>
+<TD>Using SQLite</TD>
+<TD>503</TD>
+</TR>
+<TR><TD>6</TD>
+<TD>Capital in the 21st century</TD>
+<TD>685</TD>
+</TR>
+<TR><TD>7</TD>
+<TD>SQL</TD>
+<TD>534</TD>
+</TR>
+<TR><TD>8</TD>
+<TD>Discovering SQL</TD>
+<TD>400</TD>
+</TR>
+<TR><TD>9</TD>
+<TD>SQL</TD>
+<TD>460</TD>
+</TR>
+<TR><TD>10</TD>
+<TD>A guide to SQL</TD>
+<TD>309</TD>
+</TR>
+<TR><TD>11</TD>
+<TD>SQL bible</TD>
+<TD>857</TD>
+</TR>
+<TR><TD>12</TD>
+<TD>Learning SQL</TD>
+<TD>320</TD>
+</TR>
+<TR><TD>13</TD>
+<TD>SQL for dummies</TD>
+<TD>440</TD>
+</TR>
+<TR><TD>15</TD>
+<TD>Beginning SQL</TD>
+<TD>501</TD>
+</TR>
+<TR><TD>17</TD>
+<TD>SQL all-in-one</TD>
+<TD>708</TD>
+</TR>
+<TR><TD>18</TD>
+<TD>Access 2013 all-in-one</TD>
+<TD>760</TD>
+</TR>
+<TR><TD>19</TD>
+<TD>SQL in a nutshell</TD>
+<TD>691</TD>
+</TR>
+<TR><TD>20</TD>
+<TD>MySQL in a nutshell</TD>
+<TD>321</TD>
+</TR>
+</table>
 
-we get five,
-but record #752 isn't in either set of results.
-The reason is that
-`null<'1930-01-01'`
-is neither true nor false:
-null means, "We don't know,"
-and if we don't know the value on the left side of a comparison,
-we don't know whether the comparison is true or false.
-Since databases represent "don't know" as null,
-the value of `null<'1930-01-01'`
-is actually `null`.
-`null>='1930-01-01'` is also null
-because we can't answer to that question either.
-And since the only records kept by a `WHERE`
-are those for which the test is true,
-record #752 isn't included in either set of results.
+we get sixteen results. Records #2 and #16 aren't in either set of results. 
+The reason is that `NULL<300` 
+is neither true nor false: null means, "We don't know," 
+and if we don't know the value on the left side of a comparison, 
+we don't know whether the comparison is true or false. 
+Since databases represent "don't know" as null, the value of `NULL<300` is actually NULL. 
+
+`NULL>=300` is also null because we can't answer to that question either. And since the only records kept by a 
+`WHERE` are those for which the test is true, records #2 and #16 aren't included in either set of results.
 
 Comparisons aren't the only operations that behave this way with nulls.
-`1+null` is `null`,
-`5*null` is `null`,
-`log(null)` is `null`,
+`1+NULL` is `NULL`,
+`5*NULL` is `NULL`,
 and so on.
 In particular,
 comparing things to null with = and != produces null:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated=NULL;
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages=NULL;
 ~~~
 
 produces no output, and neither does:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated!=NULL;
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages!=NULL;
 ~~~
 
 To check whether a value is `null` or not,
 we must use a special test `IS NULL`:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated IS NULL;
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages IS NULL;
 ~~~
 
-|ident|site|dated     |
-|-----|----|----------|
-|752  |DR-3|-null-    |
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>2</TD>
+<TD>SQL for dummies</TD>
+<TD>-null-</TD>
+</TR>
+<TR><TD>16</TD>
+<TD>Microsoft SQL server 2012</TD>
+<TD>-null-</TD>
+</TR>
+</table>
 
 or its inverse `IS NOT NULL`:
 
 ~~~ {.sql}
-SELECT * FROM Visited WHERE dated IS NOT NULL;
+SELECT Work_ID, Title, Pages FROM Works WHERE Pages IS NOT NULL;
 ~~~
 
-|ident|site|dated     |
-|-----|----|----------|
-|619  |DR-1|1927-02-08|
-|622  |DR-1|1927-02-10|
-|734  |DR-3|1930-01-07|
-|735  |DR-3|1930-01-12|
-|751  |DR-3|1930-02-26|
-|837  |MSK-|1932-01-14|
-|844  |DR-1|1932-03-22|
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>1</TD>
+<TD>SQL in a nutshell</TD>
+<TD>578</TD>
+</TR>
+<TR><TD>3</TD>
+<TD>PHP &amp; MySQL</TD>
+<TD>532</TD>
+</TR>
+<TR><TD>4</TD>
+<TD>Using SQLite</TD>
+<TD>503</TD>
+</TR>
+<TR><TD>5</TD>
+<TD>Geek sublime</TD>
+<TD>258</TD>
+</TR>
+<TR><TD>6</TD>
+<TD>Capital in the 21st century</TD>
+<TD>685</TD>
+</TR>
+<TR><TD>7</TD>
+<TD>SQL</TD>
+<TD>534</TD>
+</TR>
+<TR><TD>8</TD>
+<TD>Discovering SQL</TD>
+<TD>400</TD>
+</TR>
+<TR><TD>9</TD>
+<TD>SQL</TD>
+<TD>460</TD>
+</TR>
+<TR><TD>10</TD>
+<TD>A guide to SQL</TD>
+<TD>309</TD>
+</TR>
+<TR><TD>11</TD>
+<TD>SQL bible</TD>
+<TD>857</TD>
+</TR>
+<TR><TD>12</TD>
+<TD>Learning SQL</TD>
+<TD>320</TD>
+</TR>
+<TR><TD>13</TD>
+<TD>SQL for dummies</TD>
+<TD>440</TD>
+</TR>
+<TR><TD>14</TD>
+<TD>Beginning SQL queries</TD>
+<TD>218</TD>
+</TR>
+<TR><TD>15</TD>
+<TD>Beginning SQL</TD>
+<TD>501</TD>
+</TR>
+<TR><TD>17</TD>
+<TD>SQL all-in-one</TD>
+<TD>708</TD>
+</TR>
+<TR><TD>18</TD>
+<TD>Access 2013 all-in-one</TD>
+<TD>760</TD>
+</TR>
+<TR><TD>19</TD>
+<TD>SQL in a nutshell</TD>
+<TD>691</TD>
+</TR>
+<TR><TD>20</TD>
+<TD>MySQL in a nutshell</TD>
+<TD>321</TD>
+</TR>
+</table>
 
 Null values can cause headaches wherever they appear.
-For example,
-suppose we want to find all the salinity measurements
-that weren't taken by Lake.
+For example, suppose we want to find all books about SQL that have less than 500 pages. 
 It's natural to write the query like this:
 
 ~~~ {.sql}
-SELECT * FROM Survey WHERE quant='sal' AND person!='lake';
+SELECT * FROM Works WHERE Title LIKE "%SQL%" AND Pages<500;
 ~~~
 
-|taken|person|quant|reading|
-|-----|------|-----|-------|
-|619  |dyer  |sal  |0.13   |
-|622  |dyer  |sal  |0.09   |
-|752  |roe   |sal  |41.6   |
-|837  |roe   |sal  |22.5   |
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>ISBN</TH>
+<TH>Date</TH>
+<TH>Place</TH>
+<TH>Publisher</TH>
+<TH>Edition</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>8</TD>
+<TD>Discovering SQL</TD>
+<TD>9781118002674</TD>
+<TD>2011</TD>
+<TD>Indianapolis</TD>
+<TD>Wiley</TD>
+<TD></TD>
+<TD>400</TD>
+</TR>
+<TR><TD>9</TD>
+<TD>SQL</TD>
+<TD>0321334175</TD>
+<TD>2005</TD>
+<TD>Berkeley</TD>
+<TD>Peachpit</TD>
+<TD>2nd ed.</TD>
+<TD>460</TD>
+</TR>
+<TR><TD>10</TD>
+<TD>A guide to SQL</TD>
+<TD>9780324597684</TD>
+<TD>2008</TD>
+<TD>Mason</TD>
+<TD>South-Western</TD>
+<TD>8th ed.</TD>
+<TD>309</TD>
+</TR>
+<TR><TD>12</TD>
+<TD>Learning SQL</TD>
+<TD>9780596520830</TD>
+<TD>2009</TD>
+<TD>Sebastopol</TD>
+<TD>O&#39;Reilly</TD>
+<TD>2nd ed.</TD>
+<TD>320</TD>
+</TR>
+<TR><TD>13</TD>
+<TD>SQL for dummies</TD>
+<TD>9780470557419</TD>
+<TD>2010</TD>
+<TD>Hoboken</TD>
+<TD>Wiley</TD>
+<TD>7th ed.</TD>
+<TD>440</TD>
+</TR>
+<TR><TD>14</TD>
+<TD>Beginning SQL queries</TD>
+<TD>9781590599433</TD>
+<TD>2008</TD>
+<TD>Berkeley</TD>
+<TD>Apress</TD>
+<TD></TD>
+<TD>218</TD>
+</TR>
+<TR><TD>20</TD>
+<TD>MySQL in a nutshell</TD>
+<TD>0596007892</TD>
+<TD>2005</TD>
+<TD>Sebastopol</TD>
+<TD>O&#39;Reilly</TD>
+<TD>1st ed.</TD>
+<TD>321</TD>
+</TR>
+</table>
 
-but this query filters omits the records
-where we don't know who took the measurement.
-Once again,
-the reason is that when `person` is `null`,
-the `!=` comparison produces `null`,
-so the record isn't kept in our results.
-If we want to keep these records
-we need to add an explicit check:
+
+but this query filters omits the records where we don't know the number of pages.
+Once again, the reason is that when `Pages` is `NULL`, the `<` comparison produces `NULL`, 
+so the record isn't kept in our results. If we want to keep these records we need to add an explicit check:
+
 
 ~~~ {.sql}
-SELECT * FROM Survey WHERE quant='sal' AND (person!='lake' OR person IS NULL);
+SELECT * FROM Works WHERE Title LIKE "%SQL%" AND (Pages<500 OR Pages IS NULL);
 ~~~
 
-|taken|person|quant|reading|
-|-----|------|-----|-------|
-|619  |dyer  |sal  |0.13   |
-|622  |dyer  |sal  |0.09   |
-|735  |-null-|sal  |0.06   |
-|752  |roe   |sal  |41.6   |
-|837  |roe   |sal  |22.5   |
+<table>
+<TR><TH>Work_ID</TH>
+<TH>Title</TH>
+<TH>ISBN</TH>
+<TH>Date</TH>
+<TH>Place</TH>
+<TH>Publisher</TH>
+<TH>Edition</TH>
+<TH>Pages</TH>
+</TR>
+<TR><TD>2</TD>
+<TD>SQL for dummies</TD>
+<TD>9781118607961</TD>
+<TD>2013</TD>
+<TD>Hoboken</TD>
+<TD>Wiley</TD>
+<TD>8th ed.</TD>
+<TD>-null-</TD>
+</TR>
+<TR><TD>8</TD>
+<TD>Discovering SQL</TD>
+<TD>9781118002674</TD>
+<TD>2011</TD>
+<TD>Indianapolis</TD>
+<TD>Wiley</TD>
+<TD>-null-</TD>
+<TD>400</TD>
+</TR>
+<TR><TD>9</TD>
+<TD>SQL</TD>
+<TD>0321334175</TD>
+<TD>2005</TD>
+<TD>Berkeley</TD>
+<TD>Peachpit</TD>
+<TD>2nd ed.</TD>
+<TD>460</TD>
+</TR>
+<TR><TD>10</TD>
+<TD>A guide to SQL</TD>
+<TD>9780324597684</TD>
+<TD>2008</TD>
+<TD>Mason</TD>
+<TD>South-Western</TD>
+<TD>8th ed.</TD>
+<TD>309</TD>
+</TR>
+<TR><TD>12</TD>
+<TD>Learning SQL</TD>
+<TD>9780596520830</TD>
+<TD>2009</TD>
+<TD>Sebastopol</TD>
+<TD>O&#39;Reilly</TD>
+<TD>2nd ed.</TD>
+<TD>320</TD>
+</TR>
+<TR><TD>13</TD>
+<TD>SQL for dummies</TD>
+<TD>9780470557419</TD>
+<TD>2010</TD>
+<TD>Hoboken</TD>
+<TD>Wiley</TD>
+<TD>7th ed.</TD>
+<TD>440</TD>
+</TR>
+<TR><TD>14</TD>
+<TD>Beginning SQL queries</TD>
+<TD>9781590599433</TD>
+<TD>2008</TD>
+<TD>Berkeley</TD>
+<TD>Apress</TD>
+<TD>-null-</TD>
+<TD>218</TD>
+</TR>
+<TR><TD>16</TD>
+<TD>Microsoft SQL server 2012</TD>
+<TD>9780132977661</TD>
+<TD>2013</TD>
+<TD>Indianapolis</TD>
+<TD>Sams</TD>
+<TD>-null-</TD>
+<TD>-null-</TD>
+</TR>
+<TR><TD>20</TD>
+<TD>MySQL in a nutshell</TD>
+<TD>0596007892</TD>
+<TD>2005</TD>
+<TD>Sebastopol</TD>
+<TD>O&#39;Reilly</TD>
+<TD>1st ed.</TD>
+<TD>321</TD>
+</TR>
+</table>
 
 We still have to decide whether this is the right thing to do or not.
-If we want to be absolutely sure that
-we aren't including any measurements by Lake in our results,
-we need to exclude all the records for which we don't know who did the work.
+If we want to be absolutely sure that we aren't including any books with less than 500 pages, 
+we need to exclude all the records for which we don't know the number of pages.
 
 In contrast to arithmetic or Boolean operators, aggregation functions that combine multiple values, such as `min`, `max` or `avg`, *ignore* `null` values. In the majority of cases, this is a desirable output: for example, unknown values are thus not affecting our data when we are averaging it. Aggregation functions will be addressed in more detail in [the next section](06-agg.html).
 
-> ## Sorting by Known Date {.challenge}
+> ## Sorting by Known Number of Pages {.challenge}
 >
-> Write a query that sorts the records in `Visited` by date,
-> omitting entries for which the date is not known
-> (i.e., is null).
+> Write a query that sorts the records in `Works` by the number of pages, 
+> omitting entries for which this information is not known (i.e., is NULL).
 
 > ## NULL in a Set {.challenge}
 >
 > What do you expect the query:
 >
 > ~~~ {.sql}
-> SELECT * FROM Visited WHERE dated IN ('1927-02-08', NULL);
+> SELECT * FROM Works WHERE Edition in ("1st ed.", NULL);
 > ~~~
 >
 > to produce?
@@ -196,7 +562,6 @@ In contrast to arithmetic or Boolean operators, aggregation functions that combi
 > to mark missing data rather than `null`.
 > For example,
 > they will use the date "0000-00-00" to mark a missing date,
-> or -1.0 to mark a missing salinity or radiation reading
-> (since actual readings cannot be negative).
+> or -1 to mark a missing page number
 > What does this simplify?
 > What burdens or risks does it introduce?
