@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Databases and SQL
+title: Databases and SQL - Library edition
 subtitle: Selecting Data
 minutes: 30
 ---
@@ -45,84 +45,68 @@ but that handful accounts for most of what scientists do.
 
 The tables below show the database we will use in our examples:
 
-> **Person**: people who took readings.
+> **Works**: table containing bibliographic details for the library's books
 >
-> |ident   |personal |family
-> |--------|---------|----------
-> |dyer    |William  |Dyer
-> |pb      |Frank    |Pabodie
-> |lake    |Anderson |Lake
-> |roe     |Valentina|Roerich
-> |danforth|Frank    |Danforth
+> Work_ID     Title              ISBN           Date        Place       Publisher   Edition     Pages     
+> ----------  -----------------  -------------  ----------  ----------  ----------  ----------  ----------
+> 1           SQL in a nutshell  9780596518844  2009        Sebastopol  O'Reilly    3rd ed.     578       
+> 2           SQL for dummies    9781118607961  2013        Hoboken     Wiley       8th ed.     -null-          
+> 3           PHP & MySQL        9781449325572  2013        Sebastopol  O'Reilly    2nd ed.     532       
+> 4           Using SQLite       9780596521189  2010        Sebastopol  O'Reilly    1st ed.     503       
+> 5           Geek sublime       9780571310302  2014        London      Faber & Fa  -null-      258       
+> 6           Capital in the 21  9780674430006  2014        Cambridge   Belknap Pr  -null-      685       
+> 7           SQL                9780071548649  2009        New York    McGraw-Hil  3rd ed.     534       
+> ...
 
-> **Site**: locations where readings were taken.
+> **Items**: table containing details on copies of Works owned by the library
 >
-> |name |lat   |long   |
-> |-----|------|-------|
-> |DR-1 |-49.85|-128.57|
-> |DR-3 |-47.15|-126.72|
-> |MSK-4|-48.87|-123.4 |
+> Item_ID     Work_ID     Barcode       Acquired    Status    
+> ----------  ----------  ------------  ----------  ----------
+> 1           1           081722942611  2009        Loaned    
+> 2           1           492437609065  2011        On shelf  
+> 3           2           172480710952  2013        On shelf  
+> 4           3           708014968732  2013        Missing   
+> ...
 
-> **Visited**: when readings were taken at specific sites.
+> **Authors**: table containing details on authors and contributors 
 >
-> |ident|site |dated     |
-> |-----|-----|----------|
-> |619  |DR-1 |1927-02-08|
-> |622  |DR-1 |1927-02-10|
-> |734  |DR-3 |1930-01-07|
-> |735  |DR-3 |1930-01-12|
-> |751  |DR-3 |1930-02-26|
-> |752  |DR-3 |-null-    |
-> |837  |MSK-4|1932-01-14|
-> |844  |DR-1 |1932-03-22|
+> Author_ID   Family      Personal    Occupation  Birth       Death     
+> ----------  ----------  ----------  ----------  ----------  ----------
+> 1           Kline       Kevin E.    -null-      1966        -null-          
+> 2           Kline       Daniel      -null-      -null-      -null-                
+> 3           Hunt        Brand       -null-      -null-      -null-                
+> 4           Taylor      Allen G.    -null-      1945        -null-          
+> ...
 
-> **Survey**: the actual readings.
+> **Works_Authors**: table linking works with authors
 >
-> |taken|person|quant|reading|
-> |-----|------|-----|-------|
-> |619  |dyer  |rad  |9.82   |
-> |619  |dyer  |sal  |0.13   |
-> |622  |dyer  |rad  |7.8    |
-> |622  |dyer  |sal  |0.09   |
-> |734  |pb    |rad  |8.41   |
-> |734  |lake  |sal  |0.05   |
-> |734  |pb    |temp |-21.5  |
-> |735  |pb    |rad  |7.22   |
-> |735  |-null-|sal  |0.06   |
-> |735  |-null-|temp |-26.0  |
-> |751  |pb    |rad  |4.35   |
-> |751  |pb    |temp |-18.5  |
-> |751  |lake  |sal  |0.1    |
-> |752  |lake  |rad  |2.19   |
-> |752  |lake  |sal  |0.09   |
-> |752  |lake  |temp |-16.0  |
-> |752  |roe   |sal  |41.6   |
-> |837  |lake  |rad  |1.46   |
-> |837  |lake  |sal  |0.21   |
-> |837  |roe   |sal  |22.5   |
-> |844  |roe   |rad  |11.25  |
+> Work_ID     Author_ID   Role      
+> ----------  ----------  -----------
+> 1           1           Author    
+> 1           2           Contributor
+> 1           3           Contributor
+> 2           4           Author    
+> ...
 
-Notice that three entries --- one in the `Visited` table,
-and two in the `Survey` table --- don't contain any actual
+Notice that several entries don't contain any actual
 data, but instead have a special `-null-` entry:
 we'll return to these missing values [later](05-null.html).
 For now,
-let's write an SQL query that displays scientists' names.
+let's write an SQL query that displays authors' names.
 We do this using the SQL command `SELECT`,
 giving it the names of the columns we want and the table we want them from.
 Our query and its output look like this:
 
 ~~~ {.sql}
-SELECT family, personal FROM Person;
+SELECT family, personal FROM Authors;
 ~~~
 
-|family  |personal |
-|--------|---------|
-|Dyer    |William  |
-|Pabodie |Frank    |
-|Lake    |Anderson |
-|Roerich |Valentina|
-|Danforth|Frank    |
+Family      Personal  
+----------  ----------
+Kline       Kevin E.  
+Kline       Daniel    
+Hunt        Brand
+...   
 
 The semicolon at the end of the query
 tells the database manager that the query is complete and ready to run.
@@ -133,16 +117,15 @@ as the example below shows,
 SQL is [case insensitive](reference.html#case-insensitive).
 
 ~~~ {.sql}
-SeLeCt FaMiLy, PeRsOnAl FrOm PeRsOn;
+SeLeCt FaMiLy, PeRsOnAl FrOm wORks;
 ~~~
 
-|family  |personal |
-|--------|---------|
-|Dyer    |William  |
-|Pabodie |Frank    |
-|Lake    |Anderson |
-|Roerich |Valentina|
-|Danforth|Frank    |
+Family      Personal  
+----------  ----------
+Kline       Kevin E.  
+Kline       Daniel    
+Hunt        Brand
+... 
 
 You can use SQL's case insensitivity to your advantage. For instance, some people choose to write SQL keywords (such as `SELECT` and `FROM`) in capital letters and **field** and **table** names in lower case. This can make it easier to locate parts of an SQL statement. For instance, you can scan the statement, quickly locate the prominent `FROM` keyword and know the table name follows.
 Whatever casing convention you choose,
@@ -160,62 +143,62 @@ For example,
 we could swap the columns in the output by writing our query as:
 
 ~~~ {.sql}
-SELECT personal, family FROM Person;
+SELECT personal, family FROM Authors;
 ~~~
 
-|personal |family  |
-|---------|--------|
-|William  |Dyer    |
-|Frank    |Pabodie |
-|Anderson |Lake    |
-|Valentina|Roerich |
-|Frank    |Danforth|
+Personal    Family    
+----------  ----------
+Kevin E.    Kline     
+Daniel      Kline     
+Brand       Hunt      
+Allen G.    Taylor   
+...
 
 or even repeat columns:
 
 ~~~ {.sql}
-SELECT ident, ident, ident FROM Person;
+SELECT personal, personal FROM Authors;
 ~~~
 
-|ident   |ident   |ident   |
-|--------|--------|--------|
-|dyer    |dyer    |dyer    |
-|pb      |pb      |pb      |
-|lake    |lake    |lake    |
-|roe     |roe     |roe     |
-|danforth|danforth|danforth|
+Personal    Personal  
+----------  ----------
+Kevin E.    Kevin E.  
+Daniel      Daniel    
+Brand       Brand     
+Allen G.    Allen G.
+...  
 
 As a shortcut,
 we can select all of the columns in a table using `*`:
 
 ~~~ {.sql}
-SELECT * FROM Person;
+SELECT * FROM Authors;
 ~~~
 
-|ident   |personal |family  |
-|--------|---------|--------|
-|dyer    |William  |Dyer    |
-|pb      |Frank    |Pabodie |
-|lake    |Anderson |Lake    |
-|roe     |Valentina|Roerich |
-|danforth|Frank    |Danforth|
+Author_ID   Family      Personal    Occupation  Birth       Death     
+----------  ----------  ----------  ----------  ----------  ----------
+1           Kline       Kevin E.                1966                  
+2           Kline       Daniel                                        
+3           Hunt        Brand                                         
+4           Taylor      Allen G.                1945                  
+...
 
-> ## Selecting Site Names {.challenge}
+> ## Selecting Work Titles {.challenge}
 >
-> Write a query that selects only site names from the `Site` table.
+> Write a query that selects only titles from the `Works` table.
 
 > ## Query Style {.challenge}
 >
 > Many people format queries as:
 >
 > ~~~
-> SELECT personal, family FROM person;
+> SELECT personal, family FROM authors;
 > ~~~
 >
 > or as:
 >
 > ~~~
-> select Personal, Family from PERSON;
+> select Personal, Family from AUTHORS;
 > ~~~
 >
 > What style do you find easiest to read, and why?

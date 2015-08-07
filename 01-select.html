@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Software Carpentry: Databases and SQL</title>
+    <title>Software Carpentry: Databases and SQL - Library edition</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
@@ -26,11 +26,11 @@
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-                    <a href="index.html"><h1 class="title">Databases and SQL</h1></a>
+                    <a href="index.html"><h1 class="title">Databases and SQL - Library edition</h1></a>
           <h2 class="subtitle">Selecting Data</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
@@ -44,7 +44,7 @@
 <p>When we are using a spreadsheet, we put formulas into cells to calculate new values based on old ones. When we are using a database, we send commands (usually called <a href="reference.html#query">queries</a>) to a <a href="reference.html#database-manager">database manager</a>: a program that manipulates the database for us. The database manager does whatever lookups and calculations the query specifies, returning the results in a tabular form that we can then use as a starting point for further queries.</p>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pushpin"></span>Changing database managers</h2>
+<h2 id="changing-database-managers"><span class="glyphicon glyphicon-pushpin"></span>Changing database managers</h2>
 </div>
 <div class="panel-body">
 <p>Every database manager — Oracle, IBM DB2, PostgreSQL, MySQL, Microsoft Access, and SQLite — stores data in a different way, so a database created with one cannot be used directly by another. However, every database manager can import and export data in a variety of formats, like .csv, so it <em>is</em> possible to move information from one to another.</p>
@@ -53,458 +53,445 @@
 <p>Queries are written in a language called <a href="reference.html#sql">SQL</a>, which stands for “Structured Query Language”. SQL provides hundreds of different ways to analyze and recombine data. We will only look at a handful of queries, but that handful accounts for most of what scientists do.</p>
 <p>The tables below show the database we will use in our examples:</p>
 <blockquote>
-<p><strong>Person</strong>: people who took readings.</p>
+<p><strong>Works</strong>: table containing bibliographic details for the library’s books</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">ident</th>
-<th align="left">personal</th>
-<th align="left">family</th>
+<th align="left">Work_ID</th>
+<th align="left">Title</th>
+<th align="left">ISBN</th>
+<th align="left">Date</th>
+<th align="left">Place</th>
+<th align="left">Publisher</th>
+<th align="left">Edition</th>
+<th align="left">Pages</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">dyer</td>
-<td align="left">William</td>
-<td align="left">Dyer</td>
+<td align="left">1</td>
+<td align="left">SQL in a nutshell</td>
+<td align="left">9780596518844</td>
+<td align="left">2009</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">3rd ed.</td>
+<td align="left">578</td>
 </tr>
 <tr class="even">
-<td align="left">pb</td>
-<td align="left">Frank</td>
-<td align="left">Pabodie</td>
+<td align="left">2</td>
+<td align="left">SQL for dummies</td>
+<td align="left">9781118607961</td>
+<td align="left">2013</td>
+<td align="left">Hoboken</td>
+<td align="left">Wiley</td>
+<td align="left">8th ed.</td>
+<td align="left">-null-</td>
 </tr>
 <tr class="odd">
-<td align="left">lake</td>
-<td align="left">Anderson</td>
-<td align="left">Lake</td>
+<td align="left">3</td>
+<td align="left">PHP &amp; MySQL</td>
+<td align="left">9781449325572</td>
+<td align="left">2013</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">2nd ed.</td>
+<td align="left">532</td>
 </tr>
 <tr class="even">
-<td align="left">roe</td>
-<td align="left">Valentina</td>
-<td align="left">Roerich</td>
+<td align="left">4</td>
+<td align="left">Using SQLite</td>
+<td align="left">9780596521189</td>
+<td align="left">2010</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">1st ed.</td>
+<td align="left">503</td>
 </tr>
 <tr class="odd">
-<td align="left">danforth</td>
-<td align="left">Frank</td>
-<td align="left">Danforth</td>
+<td align="left">5</td>
+<td align="left">Geek sublime</td>
+<td align="left">9780571310302</td>
+<td align="left">2014</td>
+<td align="left">London</td>
+<td align="left">Faber &amp; Fa</td>
+<td align="left">-null-</td>
+<td align="left">258</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">Capital in the 21</td>
+<td align="left">9780674430006</td>
+<td align="left">2014</td>
+<td align="left">Cambridge</td>
+<td align="left">Belknap Pr</td>
+<td align="left">-null-</td>
+<td align="left">685</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">SQL</td>
+<td align="left">9780071548649</td>
+<td align="left">2009</td>
+<td align="left">New York</td>
+<td align="left">McGraw-Hil</td>
+<td align="left">3rd ed.</td>
+<td align="left">534</td>
+</tr>
+<tr class="even">
+<td align="left">…</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 </blockquote>
 <blockquote>
-<p><strong>Site</strong>: locations where readings were taken.</p>
+<p><strong>Items</strong>: table containing details on copies of Works owned by the library</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">name</th>
-<th align="left">lat</th>
-<th align="left">long</th>
+<th align="left">Item_ID</th>
+<th align="left">Work_ID</th>
+<th align="left">Barcode</th>
+<th align="left">Acquired</th>
+<th align="left">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">DR-1</td>
-<td align="left">-49.85</td>
-<td align="left">-128.57</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">081722942611</td>
+<td align="left">2009</td>
+<td align="left">Loaned</td>
 </tr>
 <tr class="even">
-<td align="left">DR-3</td>
-<td align="left">-47.15</td>
-<td align="left">-126.72</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">492437609065</td>
+<td align="left">2011</td>
+<td align="left">On shelf</td>
 </tr>
 <tr class="odd">
-<td align="left">MSK-4</td>
-<td align="left">-48.87</td>
-<td align="left">-123.4</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">172480710952</td>
+<td align="left">2013</td>
+<td align="left">On shelf</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">3</td>
+<td align="left">708014968732</td>
+<td align="left">2013</td>
+<td align="left">Missing</td>
+</tr>
+<tr class="odd">
+<td align="left">…</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 </blockquote>
 <blockquote>
-<p><strong>Visited</strong>: when readings were taken at specific sites.</p>
+<p><strong>Authors</strong>: table containing details on authors and contributors</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">ident</th>
-<th align="left">site</th>
-<th align="left">dated</th>
+<th align="left">Author_ID</th>
+<th align="left">Family</th>
+<th align="left">Personal</th>
+<th align="left">Occupation</th>
+<th align="left">Birth</th>
+<th align="left">Death</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">619</td>
-<td align="left">DR-1</td>
-<td align="left">1927-02-08</td>
+<td align="left">1</td>
+<td align="left">Kline</td>
+<td align="left">Kevin E.</td>
+<td align="left">-null-</td>
+<td align="left">1966</td>
+<td align="left">-null-</td>
 </tr>
 <tr class="even">
-<td align="left">622</td>
-<td align="left">DR-1</td>
-<td align="left">1927-02-10</td>
-</tr>
-<tr class="odd">
-<td align="left">734</td>
-<td align="left">DR-3</td>
-<td align="left">1930-01-07</td>
-</tr>
-<tr class="even">
-<td align="left">735</td>
-<td align="left">DR-3</td>
-<td align="left">1930-01-12</td>
-</tr>
-<tr class="odd">
-<td align="left">751</td>
-<td align="left">DR-3</td>
-<td align="left">1930-02-26</td>
-</tr>
-<tr class="even">
-<td align="left">752</td>
-<td align="left">DR-3</td>
+<td align="left">2</td>
+<td align="left">Kline</td>
+<td align="left">Daniel</td>
+<td align="left">-null-</td>
+<td align="left">-null-</td>
 <td align="left">-null-</td>
 </tr>
 <tr class="odd">
-<td align="left">837</td>
-<td align="left">MSK-4</td>
-<td align="left">1932-01-14</td>
+<td align="left">3</td>
+<td align="left">Hunt</td>
+<td align="left">Brand</td>
+<td align="left">-null-</td>
+<td align="left">-null-</td>
+<td align="left">-null-</td>
 </tr>
 <tr class="even">
-<td align="left">844</td>
-<td align="left">DR-1</td>
-<td align="left">1932-03-22</td>
+<td align="left">4</td>
+<td align="left">Taylor</td>
+<td align="left">Allen G.</td>
+<td align="left">-null-</td>
+<td align="left">1945</td>
+<td align="left">-null-</td>
+</tr>
+<tr class="odd">
+<td align="left">…</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 </blockquote>
 <blockquote>
-<p><strong>Survey</strong>: the actual readings.</p>
+<p><strong>Works_Authors</strong>: table linking works with authors</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">taken</th>
-<th align="left">person</th>
-<th align="left">quant</th>
-<th align="left">reading</th>
+<th align="left">Work_ID</th>
+<th align="left">Author_ID</th>
+<th align="left">Role</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">619</td>
-<td align="left">dyer</td>
-<td align="left">rad</td>
-<td align="left">9.82</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">Author</td>
 </tr>
 <tr class="even">
-<td align="left">619</td>
-<td align="left">dyer</td>
-<td align="left">sal</td>
-<td align="left">0.13</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">Contributor</td>
 </tr>
 <tr class="odd">
-<td align="left">622</td>
-<td align="left">dyer</td>
-<td align="left">rad</td>
-<td align="left">7.8</td>
+<td align="left">1</td>
+<td align="left">3</td>
+<td align="left">Contributor</td>
 </tr>
 <tr class="even">
-<td align="left">622</td>
-<td align="left">dyer</td>
-<td align="left">sal</td>
-<td align="left">0.09</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">Author</td>
 </tr>
 <tr class="odd">
-<td align="left">734</td>
-<td align="left">pb</td>
-<td align="left">rad</td>
-<td align="left">8.41</td>
-</tr>
-<tr class="even">
-<td align="left">734</td>
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">0.05</td>
-</tr>
-<tr class="odd">
-<td align="left">734</td>
-<td align="left">pb</td>
-<td align="left">temp</td>
-<td align="left">-21.5</td>
-</tr>
-<tr class="even">
-<td align="left">735</td>
-<td align="left">pb</td>
-<td align="left">rad</td>
-<td align="left">7.22</td>
-</tr>
-<tr class="odd">
-<td align="left">735</td>
-<td align="left">-null-</td>
-<td align="left">sal</td>
-<td align="left">0.06</td>
-</tr>
-<tr class="even">
-<td align="left">735</td>
-<td align="left">-null-</td>
-<td align="left">temp</td>
-<td align="left">-26.0</td>
-</tr>
-<tr class="odd">
-<td align="left">751</td>
-<td align="left">pb</td>
-<td align="left">rad</td>
-<td align="left">4.35</td>
-</tr>
-<tr class="even">
-<td align="left">751</td>
-<td align="left">pb</td>
-<td align="left">temp</td>
-<td align="left">-18.5</td>
-</tr>
-<tr class="odd">
-<td align="left">751</td>
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">0.1</td>
-</tr>
-<tr class="even">
-<td align="left">752</td>
-<td align="left">lake</td>
-<td align="left">rad</td>
-<td align="left">2.19</td>
-</tr>
-<tr class="odd">
-<td align="left">752</td>
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">0.09</td>
-</tr>
-<tr class="even">
-<td align="left">752</td>
-<td align="left">lake</td>
-<td align="left">temp</td>
-<td align="left">-16.0</td>
-</tr>
-<tr class="odd">
-<td align="left">752</td>
-<td align="left">roe</td>
-<td align="left">sal</td>
-<td align="left">41.6</td>
-</tr>
-<tr class="even">
-<td align="left">837</td>
-<td align="left">lake</td>
-<td align="left">rad</td>
-<td align="left">1.46</td>
-</tr>
-<tr class="odd">
-<td align="left">837</td>
-<td align="left">lake</td>
-<td align="left">sal</td>
-<td align="left">0.21</td>
-</tr>
-<tr class="even">
-<td align="left">837</td>
-<td align="left">roe</td>
-<td align="left">sal</td>
-<td align="left">22.5</td>
-</tr>
-<tr class="odd">
-<td align="left">844</td>
-<td align="left">roe</td>
-<td align="left">rad</td>
-<td align="left">11.25</td>
+<td align="left">…</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 </blockquote>
-<p>Notice that three entries — one in the <code>Visited</code> table, and two in the <code>Survey</code> table — don’t contain any actual data, but instead have a special <code>-null-</code> entry: we’ll return to these missing values <a href="05-null.html">later</a>. For now, let’s write an SQL query that displays scientists’ names. We do this using the SQL command <code>SELECT</code>, giving it the names of the columns we want and the table we want them from. Our query and its output look like this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> family, personal <span class="kw">FROM</span> Person;</code></pre>
+<p>Notice that several entries don’t contain any actual data, but instead have a special <code>-null-</code> entry: we’ll return to these missing values <a href="05-null.html">later</a>. For now, let’s write an SQL query that displays authors’ names. We do this using the SQL command <code>SELECT</code>, giving it the names of the columns we want and the table we want them from. Our query and its output look like this:</p>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> family, personal <span class="kw">FROM</span> Authors;</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">family</th>
-<th align="left">personal</th>
+<th align="left">Family</th>
+<th align="left">Personal</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Dyer</td>
-<td align="left">William</td>
+<td align="left">Kline</td>
+<td align="left">Kevin E.</td>
 </tr>
 <tr class="even">
-<td align="left">Pabodie</td>
-<td align="left">Frank</td>
+<td align="left">Kline</td>
+<td align="left">Daniel</td>
 </tr>
 <tr class="odd">
-<td align="left">Lake</td>
-<td align="left">Anderson</td>
+<td align="left">Hunt</td>
+<td align="left">Brand</td>
 </tr>
 <tr class="even">
-<td align="left">Roerich</td>
-<td align="left">Valentina</td>
-</tr>
-<tr class="odd">
-<td align="left">Danforth</td>
-<td align="left">Frank</td>
+<td align="left">…</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p>The semicolon at the end of the query tells the database manager that the query is complete and ready to run. We have written our commands and column names in lower case, and the table name in Title Case, but we don’t have to: as the example below shows, SQL is <a href="reference.html#case-insensitive">case insensitive</a>.</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SeLeCt</span> FaMiLy, PeRsOnAl <span class="kw">FrOm</span> PeRsOn;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SeLeCt</span> FaMiLy, PeRsOnAl <span class="kw">FrOm</span> wORks;</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">family</th>
-<th align="left">personal</th>
+<th align="left">Family</th>
+<th align="left">Personal</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Dyer</td>
-<td align="left">William</td>
+<td align="left">Kline</td>
+<td align="left">Kevin E.</td>
 </tr>
 <tr class="even">
-<td align="left">Pabodie</td>
-<td align="left">Frank</td>
+<td align="left">Kline</td>
+<td align="left">Daniel</td>
 </tr>
 <tr class="odd">
-<td align="left">Lake</td>
-<td align="left">Anderson</td>
+<td align="left">Hunt</td>
+<td align="left">Brand</td>
 </tr>
 <tr class="even">
-<td align="left">Roerich</td>
-<td align="left">Valentina</td>
-</tr>
-<tr class="odd">
-<td align="left">Danforth</td>
-<td align="left">Frank</td>
+<td align="left">…</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p>You can use SQL’s case insensitivity to your advantage. For instance, some people choose to write SQL keywords (such as <code>SELECT</code> and <code>FROM</code>) in capital letters and <strong>field</strong> and <strong>table</strong> names in lower case. This can make it easier to locate parts of an SQL statement. For instance, you can scan the statement, quickly locate the prominent <code>FROM</code> keyword and know the table name follows. Whatever casing convention you choose, please be consistent: complex queries are hard enough to read without the extra cognitive load of random capitalization. One convention is to use UPPER CASE for SQL statements, to distinguish them from tables and column names. This is the convention that we will use for this lesson.</p>
 <p>Going back to our query, it’s important to understand that the rows and columns in a database table aren’t actually stored in any particular order. They will always be <em>displayed</em> in some order, but we can control that in various ways. For example, we could swap the columns in the output by writing our query as:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> personal, family <span class="kw">FROM</span> Person;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> personal, family <span class="kw">FROM</span> Authors;</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">personal</th>
-<th align="left">family</th>
+<th align="left">Personal</th>
+<th align="left">Family</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">William</td>
-<td align="left">Dyer</td>
+<td align="left">Kevin E.</td>
+<td align="left">Kline</td>
 </tr>
 <tr class="even">
-<td align="left">Frank</td>
-<td align="left">Pabodie</td>
+<td align="left">Daniel</td>
+<td align="left">Kline</td>
 </tr>
 <tr class="odd">
-<td align="left">Anderson</td>
-<td align="left">Lake</td>
+<td align="left">Brand</td>
+<td align="left">Hunt</td>
 </tr>
 <tr class="even">
-<td align="left">Valentina</td>
-<td align="left">Roerich</td>
+<td align="left">Allen G.</td>
+<td align="left">Taylor</td>
 </tr>
 <tr class="odd">
-<td align="left">Frank</td>
-<td align="left">Danforth</td>
+<td align="left">…</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p>or even repeat columns:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> ident, ident, ident <span class="kw">FROM</span> Person;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> personal, personal <span class="kw">FROM</span> Authors;</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">ident</th>
-<th align="left">ident</th>
-<th align="left">ident</th>
+<th align="left">Personal</th>
+<th align="left">Personal</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">dyer</td>
-<td align="left">dyer</td>
-<td align="left">dyer</td>
+<td align="left">Kevin E.</td>
+<td align="left">Kevin E.</td>
 </tr>
 <tr class="even">
-<td align="left">pb</td>
-<td align="left">pb</td>
-<td align="left">pb</td>
+<td align="left">Daniel</td>
+<td align="left">Daniel</td>
 </tr>
 <tr class="odd">
-<td align="left">lake</td>
-<td align="left">lake</td>
-<td align="left">lake</td>
+<td align="left">Brand</td>
+<td align="left">Brand</td>
 </tr>
 <tr class="even">
-<td align="left">roe</td>
-<td align="left">roe</td>
-<td align="left">roe</td>
+<td align="left">Allen G.</td>
+<td align="left">Allen G.</td>
 </tr>
 <tr class="odd">
-<td align="left">danforth</td>
-<td align="left">danforth</td>
-<td align="left">danforth</td>
+<td align="left">…</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p>As a shortcut, we can select all of the columns in a table using <code>*</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Person;</code></pre>
+<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Authors;</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">ident</th>
-<th align="left">personal</th>
-<th align="left">family</th>
+<th align="left">Author_ID</th>
+<th align="left">Family</th>
+<th align="left">Personal</th>
+<th align="left">Occupation</th>
+<th align="left">Birth</th>
+<th align="left">Death</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">dyer</td>
-<td align="left">William</td>
-<td align="left">Dyer</td>
+<td align="left">1</td>
+<td align="left">Kline</td>
+<td align="left">Kevin E.</td>
+<td align="left"></td>
+<td align="left">1966</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">pb</td>
-<td align="left">Frank</td>
-<td align="left">Pabodie</td>
+<td align="left">2</td>
+<td align="left">Kline</td>
+<td align="left">Daniel</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">lake</td>
-<td align="left">Anderson</td>
-<td align="left">Lake</td>
+<td align="left">3</td>
+<td align="left">Hunt</td>
+<td align="left">Brand</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">roe</td>
-<td align="left">Valentina</td>
-<td align="left">Roerich</td>
+<td align="left">4</td>
+<td align="left">Taylor</td>
+<td align="left">Allen G.</td>
+<td align="left"></td>
+<td align="left">1945</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">danforth</td>
-<td align="left">Frank</td>
-<td align="left">Danforth</td>
+<td align="left">…</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Selecting Site Names</h2>
+<h2 id="selecting-work-titles"><span class="glyphicon glyphicon-pencil"></span>Selecting Work Titles</h2>
 </div>
 <div class="panel-body">
-<p>Write a query that selects only site names from the <code>Site</code> table.</p>
+<p>Write a query that selects only titles from the <code>Works</code> table.</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Query Style</h2>
+<h2 id="query-style"><span class="glyphicon glyphicon-pencil"></span>Query Style</h2>
 </div>
 <div class="panel-body">
 <p>Many people format queries as:</p>
-<pre><code>SELECT personal, family FROM person;</code></pre>
+<pre><code>SELECT personal, family FROM authors;</code></pre>
 <p>or as:</p>
-<pre><code>select Personal, Family from PERSON;</code></pre>
+<pre><code>select Personal, Family from AUTHORS;</code></pre>
 <p>What style do you find easiest to read, and why?</p>
 </div>
 </section>

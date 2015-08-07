@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Databases and SQL
+title: Databases and SQL  - Library edition
 subtitle: Discussion
 ---
 
@@ -22,20 +22,15 @@ First, download and install SQLite if it is not already installed on your operat
 * Linux: <code>sqlite3</code> comes pre-installed on Linux.
 
 Create a directory where you will carry out the exercises for this lesson, and
-change to it using the <code>cd</code> command. Download the file [survey.db](http://files.software-carpentry.org/survey.db) into this
+change to it using the <code>cd</code> command. Download the file [swclib.db](http://bit.ly/swclibdb) into this
 directory.
-
-    $ mkdir swc_sql 
-    $ cd swc_sql
-    $ wget http://files.software-carpentry.org/survey.db
-
 
 First, load the example database into SQLite. 
 On the shell command line, type
 
-    sqlite3 survey.db
+    sqlite3 swclib.db
 
-This command instructs SQLite to load the database in the `survey.db` file.
+This command instructs SQLite to load the database in the `swclib.db` file.
 
 You should see something like the following.
 
@@ -49,20 +44,21 @@ All SQLite-specific commands are prefixed with a . to distinguish them from SQL 
 Type <code>.tables</code> to list the tables in the database. 
 
     sqlite> .tables
-    Person   Site     Survey   Visited
+    Authors        Items          Works          Works_Authors
 
 
 Type the following SQL <code>SELECT</code> command. 
-This <code>SELECT</code> statement selects all (*) rows from the Site table.
+This <code>SELECT</code> statement selects all (*) rows from the Works table.
 
-<code>select * from Site;</code>
+<code>SELECT * FROM Works;</code>
 
 Complete your SQL statement with a semicolon.
 
-    sqlite> select * from Site;
-    DR-1|-49.85|-128.57
-    DR-3|-47.15|-126.72
-    MSK-4|-48.87|-123.4
+    sqlite> SELECT * FROM Works;
+	1|SQL in a nutshell|9780596518844|2009|Sebastopol|O'Reilly|3rd ed.|578
+	2|SQL for dummies|9781118607961|2013|Hoboken|Wiley|8th ed.|
+	3|PHP & MySQL|9781449325572|2013|Sebastopol|O'Reilly|2nd ed.|532
+	...
 
 You can change some SQLite settings to make the output easier to read. 
 First, 
@@ -71,12 +67,13 @@ Then turn on the display of column headers.
 
     sqlite> .mode column
     sqlite> .header on
-    sqlite> select * from Site;
-    name        lat         long
-    ----------  ----------  ----------
-    DR-1        -49.85      -128.57
-    DR-3        -47.15      -126.72
-    MSK-4       -48.87      -123.4
+    sqlite> SELECT * FROM Works;
+	Work_ID     Title              ISBN           Date        Place       Publisher   Edition     Pages     
+	----------  -----------------  -------------  ----------  ----------  ----------  ----------  ----------
+	1           SQL in a nutshell  9780596518844  2009        Sebastopol  O'Reilly    3rd ed.     578       
+	2           SQL for dummies    9781118607961  2013        Hoboken     Wiley       8th ed.               
+	3           PHP & MySQL        9781449325572  2013        Sebastopol  O'Reilly    2nd ed.     532
+	...
 
 
 To exit SQLite and return to the shell command line, 
