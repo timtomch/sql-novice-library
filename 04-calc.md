@@ -190,7 +190,7 @@ SELECT Personal || " " || Family FROM Authors LIMIT 5;
 > </TR>
 </table>
 
-> ## Selecting Major Site Identifiers {.challenge}
+> ## Using ISBNs for Collection Analysis {.challenge}
 >
 > The `Works` table contains [ISBN](https://en.wikipedia.org/wiki/ISBN) numbers that are either in 10-digit or 13-digit format. 
 > The 13-digit numbers all start with the '978' prefix. The two digits following the prefix (or the first two digits in ISBN-10) 
