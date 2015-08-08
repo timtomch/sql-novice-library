@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Databases and SQL
+title: Databases and SQL - Library edition
 subtitle: Programming with Databases
 minutes: 20
 ---
@@ -17,14 +17,14 @@ Other languages use almost exactly the same model:
 library and function names may differ,
 but the concepts are the same.
 
-Here's a short Python program that selects latitudes and longitudes
-from an SQLite database stored in a file called `survey.db`:
+Here's a short Python program that selects author names
+from an SQLite database stored in a file called `swclib.db`:
 
 ~~~ {.python}
 import sqlite3
-connection = sqlite3.connect("survey.db")
+connection = sqlite3.connect("swclib.db")
 cursor = connection.cursor()
-cursor.execute("SELECT Site.lat, Site.long FROM Site;")
+cursor.execute("SELECT personal, family FROM Authors;")
 results = cursor.fetchall()
 for r in results:
     print r
@@ -32,9 +32,10 @@ cursor.close()
 connection.close()
 ~~~
 ~~~ {.output}
-(-49.85, -128.57)
-(-47.15, -126.72)
-(-48.87, -123.4)
+(Kevin E.,Kline)
+(Daniel,Kline)
+(Brand,Hunt)
+...
 ~~~
 
 The program starts by importing the `sqlite3` library.
@@ -81,11 +82,12 @@ it's normal to create one connection that stays open for the lifetime of the pro
 
 Queries in real applications will often depend on values provided by users.
 For example,
-this function takes a user's ID as a parameter and returns their name:
+this function takes an author ID as a parameter and returns the
+name of the corresponding author in the database:
 
 ~~~ {.python}
-def get_name(database_file, person_ident):
-    query = "SELECT personal || ' ' || family FROM Person WHERE ident='" + person_ident + "';"
+def get_name(database_file, author_ident):
+    query = "SELECT personal || ' ' || family FROM Authors WHERE author_ID='" + author_ident + "';"
 
     connection = sqlite3.connect(database_file)
     cursor = connection.cursor()
@@ -96,28 +98,28 @@ def get_name(database_file, person_ident):
 
     return results[0][0]
 
-print "full name for dyer:", get_name('survey.db', 'dyer')
+print "full name for author #20:", get_name('swclib.db', 20)
 ~~~
 ~~~ {.output}
-full name for dyer: William Dyer
+full name for author #20: Ross Mistry
 ~~~
 
 We use string concatenation on the first line of this function
-to construct a query containing the user ID we have been given.
+to construct a query containing the `author_ID` we have been given.
 This seems simple enough,
 but what happens if someone gives us this string as input?
 
 ~~~ {.sql}
-dyer'; DROP TABLE Survey; SELECT '
+20'; DROP TABLE Items; SELECT '
 ~~~
 
-It looks like there's garbage after the name of the project,
+It looks like there's garbage after the ID of the author,
 but it is very carefully chosen garbage.
 If we insert this string into our query,
 the result is:
 
 ~~~ {.sql}
-SELECT personal || ' ' || family FROM Person WHERE ident='dyer'; DROP TABLE Survey; SELECT '';
+SELECT personal || ' ' || family FROM Authors WHERE author_ID='20'; DROP TABLE Items; SELECT '';"
 ~~~
 
 If we execute this,
@@ -138,22 +140,22 @@ instead of formatting our statements as strings.
 Here's what our example program looks like if we do this:
 
 ~~~ {.python}
-def get_name(database_file, person_ident):
-    query = "SELECT personal || ' ' || family FROM Person WHERE ident=?;"
+def get_name(database_file, author_ident):
+    query = "SELECT personal || ' ' || family FROM Authors WHERE author_ID=?;"
 
     connection = sqlite3.connect(database_file)
     cursor = connection.cursor()
-    cursor.execute(query, [person_ident])
+    cursor.execute(query, [author_ident])
     results = cursor.fetchall()
     cursor.close()
     connection.close()
 
     return results[0][0]
 
-print "full name for dyer:", get_name('survey.db', 'dyer')
+print "full name for author #20:", get_name('swclib.db', 20)
 ~~~
 ~~~ {.output}
-full name for dyer: William Dyer
+full name for author #20: Ross Mistry
 ~~~
 
 The key changes are in the query string and the `execute` call.
@@ -170,16 +172,16 @@ so that they are safe to use.
 > ## Filling a Table vs. Printing Values {.challenge}
 >
 > Write a Python program that creates a new database in a file called
-> `original.db` containing a single table called `Pressure`, with a
-> single field called `reading`, and inserts 100,000 random numbers
-> between 10.0 and 25.0.  How long does it take this program to run?
+> `visits.db` containing a single table called `Visits`, with a
+> single field called `daily_visits`, and inserts 100,000 random numbers
+> between 1 and 250.  How long does it take this program to run?
 > How long does it take to run a program that simply writes those
 > random numbers to a file?
 
 > ## Filtering in SQL vs. Filtering in Python {.challenge}
 >
 > Write a Python program that creates a new database called
-> `backup.db` with the same structure as `original.db` and copies all
-> the values greater than 20.0 from `original.db` to `backup.db`.
+> `backup.db` with the same structure as `visits.db` and copies all
+> the values greater than 50 from `visits.db` to `backup.db`.
 > Which is faster: filtering values in the query, or reading
 > everything into memory and filtering in Python?
