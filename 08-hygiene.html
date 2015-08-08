@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Software Carpentry: Databases and SQL</title>
+    <title>Software Carpentry: Databases and SQL - Library edition</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
@@ -26,11 +26,11 @@
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-                    <a href="index.html"><h1 class="title">Databases and SQL</h1></a>
+                    <a href="index.html"><h1 class="title">Databases and SQL - Library edition</h1></a>
           <h2 class="subtitle">Data Hygiene</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
@@ -45,74 +45,98 @@
 </div>
 </section>
 <p>Now that we have seen how joins work, we can see why the relational model is so useful and how best to use it. The first rule is that every value should be <a href="reference.html#atomic">atomic</a>, i.e., not contain parts that we might want to work with separately. We store personal and family names in separate columns instead of putting the entire name in one column so that we don’t have to use substring operations to get the name’s components. More importantly, we store the two parts of the name separately because splitting on spaces is unreliable: just think of a name like “Eloise St. Cyr” or “Jan Mikkel Steubart”.</p>
-<p>The second rule is that every record should have a unique primary key. This can be a serial number that has no intrinsic meaning, one of the values in the record (like the <code>ident</code> field in the <code>Person</code> table), or even a combination of values: the triple <code>(taken, person, quant)</code> from the <code>Survey</code> table uniquely identifies every measurement.</p>
-<p>The third rule is that there should be no redundant information. For example, we could get rid of the <code>Site</code> table and rewrite the <code>Visited</code> table like this:</p>
+<p>The second rule is that every record should have a unique primary key. This can be a serial number that has no intrinsic meaning (like the <code>work_ID</code> field in the <code>Works</code> table), one of the values in the record (the <code>barcode</code> field in the <code>Items</code> table could have been used instead of the <code>item_ID</code>), or even a combination of values.</p>
+<p>The third rule is that there should be no redundant information. For example, we could have a single table combining the data from the <code>Items</code> and the <code>Works</code> tables, like this:</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">ident</th>
-<th align="left">lat</th>
-<th align="left">long</th>
-<th align="left">dated</th>
+<th align="left">Item_ID</th>
+<th align="left">Barcode</th>
+<th align="left">Acquired</th>
+<th align="left">Status</th>
+<th align="left">Title</th>
+<th align="left">ISBN</th>
+<th align="left">Date</th>
+<th align="left">Place</th>
+<th align="left">Publisher</th>
+<th align="left">Edition</th>
+<th align="left">Pages</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">619</td>
-<td align="left">-49.85</td>
-<td align="left">-128.57</td>
-<td align="left">1927-02-08</td>
+<td align="left">1</td>
+<td align="left">081722942611</td>
+<td align="left">2009</td>
+<td align="left">Loaned</td>
+<td align="left">SQL in a nutshell</td>
+<td align="left">9780596518844</td>
+<td align="left">2009</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">3rd ed.</td>
+<td align="left">578</td>
 </tr>
 <tr class="even">
-<td align="left">622</td>
-<td align="left">-49.85</td>
-<td align="left">-128.57</td>
-<td align="left">1927-02-10</td>
+<td align="left">2</td>
+<td align="left">492437609065</td>
+<td align="left">2011</td>
+<td align="left">On shelf</td>
+<td align="left">SQL in a nutshell</td>
+<td align="left">9780596518844</td>
+<td align="left">2009</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">3rd ed.</td>
+<td align="left">578</td>
 </tr>
 <tr class="odd">
-<td align="left">734</td>
-<td align="left">-47.15</td>
-<td align="left">-126.72</td>
-<td align="left">1930-01-07</td>
+<td align="left">3</td>
+<td align="left">172480710952</td>
+<td align="left">2013</td>
+<td align="left">On shelf</td>
+<td align="left">SQL for dummies</td>
+<td align="left">9781118607961</td>
+<td align="left">2013</td>
+<td align="left">Hoboken</td>
+<td align="left">Wiley</td>
+<td align="left">8th ed.</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">735</td>
-<td align="left">-47.15</td>
-<td align="left">-126.72</td>
-<td align="left">1930-01-12</td>
+<td align="left">4</td>
+<td align="left">708014968732</td>
+<td align="left">2013</td>
+<td align="left">Missing</td>
+<td align="left">PHP &amp; MySQL</td>
+<td align="left">9781449325572</td>
+<td align="left">2013</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">2nd ed.</td>
+<td align="left">532</td>
 </tr>
 <tr class="odd">
-<td align="left">751</td>
-<td align="left">-47.15</td>
-<td align="left">-126.72</td>
-<td align="left">1930-02-26</td>
-</tr>
-<tr class="even">
-<td align="left">752</td>
-<td align="left">-47.15</td>
-<td align="left">-126.72</td>
-<td align="left">-null-</td>
-</tr>
-<tr class="odd">
-<td align="left">837</td>
-<td align="left">-48.87</td>
-<td align="left">-123.40</td>
-<td align="left">1932-01-14</td>
-</tr>
-<tr class="even">
-<td align="left">844</td>
-<td align="left">-49.85</td>
-<td align="left">-128.57</td>
-<td align="left">1932-03-22</td>
+<td align="left">5</td>
+<td align="left">819783404942</td>
+<td align="left">2014</td>
+<td align="left">Loaned</td>
+<td align="left">PHP &amp; MySQL</td>
+<td align="left">9781449325572</td>
+<td align="left">2013</td>
+<td align="left">Sebastopol</td>
+<td align="left">O’Reilly</td>
+<td align="left">2nd ed.</td>
+<td align="left">532</td>
 </tr>
 </tbody>
 </table>
-<p>In fact, we could use a single table that recorded all the information about each reading in each row, just as a spreadsheet would. The problem is that it’s very hard to keep data organized this way consistent: if we realize that the date of a particular visit to a particular site is wrong, we have to change multiple records in the database. What’s worse, we may have to guess which records to change, since other sites may also have been visited on that date.</p>
-<p>The fourth rule is that the units for every value should be stored explicitly. Our database doesn’t do this, and that’s a problem: Roerich’s salinity measurements are several orders of magnitude larger than anyone else’s, but we don’t know if that means she was using parts per million instead of parts per thousand, or whether there actually was a saline anomaly at that site in 1932.</p>
+<p>In fact, we could use a single table that recorded all the information about each item in each row, just as a spreadsheet would, including the author information in individual columns. The problem is that it’s very hard to keep data organized this way consistent: if we realize that the bibliographic information for a particular title is wrong, we have to change all the item records for this title. Storing the author/contributor information would pose another challenge still: our spreasheet would need to have as many columns to store this information so as to fit the records with the greatest number of contributors in our database. Those columns would mostly be empty for records that have a smaller number of contributors. What’s worse, if we added a title with an even greater number of contributors to the database, we would need to alter our table to add even more columns to it.</p>
+<p>The fourth rule is that the units for every value should be stored explicitly. If alongside the number of pages we were also recording the size of each item in our library, we would need to specify whether that size is expressed in inches or centimeters, for example.</p>
 <p>Stepping back, data and the tools used to store it have a symbiotic relationship: we use tables and joins because it’s efficient, provided our data is organized a certain way, but organize our data that way because we have tools to manipulate it efficiently. As anthropologists say, the tool shapes the hand that shapes the tool.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Identifying Atomic Values</h2>
+<h2 id="identifying-atomic-values"><span class="glyphicon glyphicon-pencil"></span>Identifying Atomic Values</h2>
 </div>
 <div class="panel-body">
 <p>Which of the following are atomic values? Which are not? Why?</p>
@@ -126,25 +150,29 @@
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Identifying a Primary Key</h2>
+<h2 id="identifying-a-primary-key"><span class="glyphicon glyphicon-pencil"></span>Identifying a Primary Key</h2>
 </div>
 <div class="panel-body">
 <p>What is the primary key in this table? I.e., what value or combination of values uniquely identifies a record?</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">latitude</th>
-<th align="left">longitude</th>
-<th align="left">date</th>
-<th align="left">temperature</th>
+<th align="left">Work_ID</th>
+<th align="left">Title</th>
+<th align="left">ISBN</th>
+<th align="left">Date</th>
+<th align="left">Place</th>
+<th align="left">Publisher</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">57.3</td>
-<td align="left">-22.5</td>
-<td align="left">2015-01-09</td>
-<td align="left">-14.2</td>
+<td align="left">16</td>
+<td align="left">Microsoft SQL server 2012</td>
+<td align="left">9780132977661</td>
+<td align="left">2013</td>
+<td align="left">Indianapolis</td>
+<td align="left">Sams</td>
 </tr>
 </tbody>
 </table>
