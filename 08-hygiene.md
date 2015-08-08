@@ -27,42 +27,43 @@ we store the two parts of the name separately because splitting on spaces is unr
 just think of a name like "Eloise St. Cyr" or "Jan Mikkel Steubart".
 
 The second rule is that every record should have a unique primary key.
-This can be a serial number that has no intrinsic meaning,
-one of the values in the record (like the `ident` field in the `Person` table),
-or even a combination of values:
-the triple `(taken, person, quant)` from the `Survey` table uniquely identifies every measurement.
+This can be a serial number that has no intrinsic meaning
+(like the `work_ID` field in the `Works` table),
+one of the values in the record (the `barcode` field in the `Items` table could have been
+used instead of the `item_ID`),
+or even a combination of values.
 
 The third rule is that there should be no redundant information.
-For example,
-we could get rid of the `Site` table and rewrite the `Visited` table like this:
+For example, we could have a single table combining the data from the
+`Items` and the `Works` tables, like this:
 
-|ident|lat   |long   |dated      |
-|-----|------|-------|-----------|
-|619  |-49.85|-128.57| 1927-02-08|
-|622  |-49.85|-128.57| 1927-02-10|
-|734  |-47.15|-126.72| 1930-01-07|
-|735  |-47.15|-126.72| 1930-01-12|
-|751  |-47.15|-126.72| 1930-02-26|
-|752  |-47.15|-126.72| -null-    |
-|837  |-48.87|-123.40| 1932-01-14|
-|844  |-49.85|-128.57| 1932-03-22|
+|Item_ID|Barcode     |Acquired|Status  |Title            |ISBN         |Date|Place     |Publisher|Edition|Pages|
+|-------|------------|--------|--------|-----------------|-------------|----|----------|---------|-------|-----|
+|1      |081722942611|2009    |Loaned  |SQL in a nutshell|9780596518844|2009|Sebastopol|O'Reilly |3rd ed.|578  |
+|2      |492437609065|2011    |On shelf|SQL in a nutshell|9780596518844|2009|Sebastopol|O'Reilly |3rd ed.|578  |
+|3      |172480710952|2013    |On shelf|SQL for dummies  |9781118607961|2013|Hoboken   |Wiley    |8th ed.|     |
+|4      |708014968732|2013    |Missing |PHP & MySQL      |9781449325572|2013|Sebastopol|O'Reilly |2nd ed.|532  |
+|5      |819783404942|2014    |Loaned  |PHP & MySQL      |9781449325572|2013|Sebastopol|O'Reilly |2nd ed.|532  |
+
 
 In fact,
-we could use a single table that recorded all the information about each reading in each row,
-just as a spreadsheet would.
+we could use a single table that recorded all the information about each item in each row,
+just as a spreadsheet would,
+including the author information in individual columns.
 The problem is that it's very hard to keep data organized this way consistent:
-if we realize that the date of a particular visit to a particular site is wrong,
-we have to change multiple records in the database.
-What's worse,
-we may have to guess which records to change,
-since other sites may also have been visited on that date.
+if we realize that the bibliographic information for a particular title is wrong,
+we have to change all the item records for this title.
+Storing the author/contributor information would pose another challenge still:
+our spreasheet would need to have as many columns to store this information so as to
+fit the records with the greatest number of contributors in our database. Those columns
+would mostly be empty for records that have a smaller number of contributors. What's worse,
+if we added a title with an even greater number of contributors to the database, we
+would need to alter our table to add even more columns to it.
 
 The fourth rule is that the units for every value should be stored explicitly.
-Our database doesn't do this,
-and that's a problem:
-Roerich's salinity measurements are several orders of magnitude larger than anyone else's,
-but we don't know if that means she was using parts per million instead of parts per thousand,
-or whether there actually was a saline anomaly at that site in 1932.
+If alongside the number of pages we were also recording the size of each item in
+our library, we would need to specify whether that size is expressed in inches
+or centimeters, for example.
 
 Stepping back,
 data and the tools used to store it have a symbiotic relationship:
@@ -86,6 +87,6 @@ the tool shapes the hand that shapes the tool.
 > What is the primary key in this table?
 > I.e., what value or combination of values uniquely identifies a record?
 >
-> |latitude|longitude|date      |temperature|
-> |--------|---------|----------|-----------|
-> |57.3    |-22.5    |2015-01-09|-14.2      |
+> |Work_ID|Title                    |ISBN         |Date|Place       |Publisher|
+> |-------|-------------------------|-------------|----|------------|---------|
+> |16     |Microsoft SQL server 2012|9780132977661|2013|Indianapolis|Sams     |
