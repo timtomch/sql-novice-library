@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Databases and SQL
+title: Databases and SQL - Library edition
 subtitle: Data Hygiene
 minutes: 30
 ---
