@@ -42,4 +42,3 @@ data, item management, and an authority file.
 
 *   [Reference](reference.html)
 *   [Discussion](discussion.html)
-*   [Instructor's Guide](instructors.html)
