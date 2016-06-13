@@ -43,7 +43,7 @@
 </section>
 <p>So far we haven’t been able to display the authors’ names in our query results, because those names are not in the <code>Works</code> but in the <code>Authors</code> table. What’s worse, because there can be many authors to a title and many title associated with each author, there is a third table, <code>Works_Authors</code>that’s taking care of this many-to-many relationship. How can these tables be joined?</p>
 <p>The SQL command to do this is <code>JOIN</code>. To see how it works, let’s start with the somewhat easier case of the <code>Items</code> table and try joining it to the <code>Works</code> table:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -292,7 +292,7 @@ Faber &amp; Faber
 </table>
 <p>The result above was truncated for display because… the query returned a list of 800 records! In fact, <code>JOIN</code> creates the <a href="reference.html#cross-product">cross product</a> of two tables, i.e., it joins each record of one table with each record of the other table to give all possible combinations. Since there are 20 records in <code>Works</code> and 40 in <code>Items</code>, the join’s output has 20*40=800 records. And since <code>Works</code> has 8 fields and <code>Items</code> has 5, the output has 8+5=13 fields.</p>
 <p>What the join <em>hasn’t</em> done is figure out if the records being joined have anything to do with each other. It has no way of knowing whether they do or not until we tell it how. To do that, we add a clause specifying that we’re only interested in combinations where `Work_ID matches in both tables:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works <span class="kw">ON</span> Items.Work_ID=Works.Work_ID <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works <span class="kw">ON</span> Items.Work_ID=Works.Work_ID <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -744,7 +744,7 @@ Belknap Press
 <p><code>ON</code> is very similar to <code>WHERE</code>, and for all the queries in this lesson you can use them interchangeably. There are differences in how they affect <a href="http://en.wikipedia.org/wiki/Join_%28SQL%29#Outer_join">outer joins</a>, but that’s beyond the scope of this lesson. Once we add this to our query, the database manager throws away records that combined information about two different sites, leaving us with just the ones we want.</p>
 <p>Notice that we used <code>Table.field</code> to specify field names in the output of the join. We do this because tables can have fields with the same name, and we need to be specific which ones we’re talking about.</p>
 <p>We can now use the same dotted notation to select the three columns we actually want out of our join:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Items.Barcode, Works.Title, Works.ISBN <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works <span class="kw">ON</span> Items.Work_ID=Works.Work_ID <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Items.Barcode, Works.Title, Works.ISBN <span class="kw">FROM</span> Items <span class="kw">JOIN</span> Works <span class="kw">ON</span> Items.Work_ID=Works.Work_ID <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -869,11 +869,11 @@ Capital in the 21st century
 </TR>
 </table>
 <p>We can now try to tackle the case of the <code>Authors</code> table. To list the contributors associated with the first item on the <code>Works</code> table (<code>Work_ID=1</code>, SQL in a nutshell 3rd ed.), we write:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Works_Authors.Role, Authors.Personal, Authors.Family 
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Works_Authors.Role, Authors.Personal, Authors.Family 
 <span class="kw">FROM</span>   Works_Authors 
 <span class="kw">JOIN</span>   Authors 
 <span class="kw">ON</span>     Authors.Author_ID=Works_Authors.Author_ID 
-<span class="kw">WHERE</span>  Works_Authors.Work_ID=<span class="dv">1</span>;</code></pre>
+<span class="kw">WHERE</span>  Works_Authors.Work_ID=<span class="dv">1</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -921,11 +921,11 @@ Hunt
 </TR>
 </table>
 <p>Or inversely, if we want to list all the works that Allen G. Taylor (<code>Author_ID=4</code>) has authored or contributed to, we can write:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Works.Title, Works.Date, Works.Edition, Works_Authors.Role 
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Works.Title, Works.Date, Works.Edition, Works_Authors.Role 
 <span class="kw">FROM</span>   Works 
 <span class="kw">JOIN</span>   Works_Authors 
 <span class="kw">ON</span>     Works.Work_ID=Works_Authors.Work_ID 
-<span class="kw">WHERE</span>  Works_Authors.Author_ID=<span class="dv">4</span>;</code></pre>
+<span class="kw">WHERE</span>  Works_Authors.Author_ID=<span class="dv">4</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -999,7 +999,7 @@ Contributor
 </table>
 <p>We can tell which records from <code>Works</code>, <code>Authors</code>, <code>Items</code> and <code>Works_Authors</code> correspond with each other because those tables contain <a href="reference.html#primary-key">primary keys</a> and <a href="reference.html#foreign-key">foreign keys</a>. A primary key is a value, or combination of values, that uniquely identifies each record in a table. A foreign key is a value (or combination of values) from one table that identifies a unique record in another table. Another way of saying this is that a foreign key is the primary key of one table that appears in some other table. In our database, <code>Works.Work_ID</code> is the primary key in the <code>Works</code> table, while <code>Items.Work_ID</code> is a foreign key relating the <code>Items</code> table’s entries to entries in <code>Works</code>. The <code>Authors_Works</code> table contains only foreign keys relating to entries in the <code>Works</code> and <code>Authors</code> tables.</p>
 <p>Most database designers believe that every table should have a well-defined primary key. They also believe that this key should be separate from the data itself, so that if we ever need to change the data, we only need to make one change in one place. One easy way to do this is to create an arbitrary, unique ID for each record as we add it to the database. This is actually very common: those IDs have names like “student numbers” and “patient numbers”, and they almost always turn out to have originally been a unique record identifier in some database system or other. As the query below demonstrates, SQLite <a href="https://www.sqlite.org/lang_createtable.html#rowid">automatically numbers records</a> as they’re added to tables, and we can use those record numbers in queries:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="dt">rowid</span>, * <span class="kw">FROM</span> Person;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="dt">rowid</span>, * <span class="kw">FROM</span> Person;</code></pre></div>
 <table>
 </table>
 <section class="challenge panel panel-success">
@@ -1031,8 +1031,8 @@ Contributor
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

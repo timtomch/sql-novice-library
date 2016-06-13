@@ -47,7 +47,20 @@
 <p>Now that we have seen how joins work, we can see why the relational model is so useful and how best to use it. The first rule is that every value should be <a href="reference.html#atomic">atomic</a>, i.e., not contain parts that we might want to work with separately. We store personal and family names in separate columns instead of putting the entire name in one column so that we don’t have to use substring operations to get the name’s components. More importantly, we store the two parts of the name separately because splitting on spaces is unreliable: just think of a name like “Eloise St. Cyr” or “Jan Mikkel Steubart”.</p>
 <p>The second rule is that every record should have a unique primary key. This can be a serial number that has no intrinsic meaning (like the <code>work_ID</code> field in the <code>Works</code> table), one of the values in the record (the <code>barcode</code> field in the <code>Items</code> table could have been used instead of the <code>item_ID</code>), or even a combination of values.</p>
 <p>The third rule is that there should be no redundant information. For example, we could have a single table combining the data from the <code>Items</code> and the <code>Works</code> tables, like this:</p>
-<table>
+<table style="width:154%;">
+<colgroup>
+<col width="11%" />
+<col width="18%" />
+<col width="12%" />
+<col width="12%" />
+<col width="25%" />
+<col width="19%" />
+<col width="6%" />
+<col width="15%" />
+<col width="13%" />
+<col width="11%" />
+<col width="8%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Item_ID</th>
@@ -154,7 +167,15 @@
 </div>
 <div class="panel-body">
 <p>What is the primary key in this table? I.e., what value or combination of values uniquely identifies a record?</p>
-<table>
+<table style="width:106%;">
+<colgroup>
+<col width="11%" />
+<col width="36%" />
+<col width="19%" />
+<col width="6%" />
+<col width="18%" />
+<col width="13%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Work_ID</th>
@@ -183,8 +204,8 @@
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

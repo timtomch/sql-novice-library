@@ -42,7 +42,7 @@
 </div>
 </section>
 <p>To get an estimate of the amount of time it will take to digitize our collection, we now want to know how many books by a given publisher are in our collection, as well as calculate the total number of pages contained in the collection. We know how to select all of the page numbers from the <code>Works</code> table:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Pages <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Pages <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -151,7 +151,7 @@ Pages
 </TR>
 </table>
 <p>but to combine them, we must use an <a href="reference.html#aggregation-function">aggregation function</a> such as <code>min</code> or <code>max</code>. Each of these functions takes a set of records as input, and produces a single record as output. For example, the following statements display the smallest and the largest books in our collection:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -171,7 +171,7 @@ Beginning SQL queries
 </TR>
 </table>
 <!--<img src="fig/sql-aggregation.svg" alt="SQL Aggregation" />-->
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -191,7 +191,7 @@ SQL bible
 </TR>
 </table>
 <p><code>min</code> and <code>max</code> are just two of the aggregation functions built into SQL. Three others are <code>avg</code>, <code>count</code>, and <code>sum</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">avg</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">avg</span>(Pages) <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -204,7 +204,7 @@ avg(Pages)
 </TD>
 </TR>
 </table>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -217,7 +217,7 @@ count(Title)
 </TD>
 </TR>
 </table>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Wiley&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -232,7 +232,7 @@ sum(Pages)
 </table>
 <p>We used <code>count(Title)</code> here, but we could just as easily have counted <code>ISBN</code> or any other field in the table, or even used <code>count(*)</code>, since the function doesn’t care about the values themselves, just how many values there are.</p>
 <p>SQL lets us do several aggregations at once. We can, for example, find the range of book sizes published by O’Reilly:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -252,7 +252,7 @@ max(Pages)
 </TR>
 </table>
 <p>We can also combine aggregated results with raw results, although the output might surprise you:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">count</span>(*) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">count</span>(*) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -273,7 +273,7 @@ MySQL in a nutshell
 </table>
 <p>Why does this title appear rather than any other published by O’Reilly? The answer is that when it has to aggregate a field, but isn’t told how to, the database manager chooses an actual value from the input set. It might use the first one processed, the last one, or something else entirely.</p>
 <p>Another important fact is that when there are no values to aggregate — for example, where there are no rows satisfying the <code>WHERE</code> clause — aggregation’s result is “don’t know” rather than zero or some other arbitrary value:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Hachette&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">min</span>(Pages), <span class="fu">max</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">Where</span> Publisher=<span class="st">&#39;Hachette&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -293,7 +293,7 @@ max(Pages)
 </TR>
 </table>
 <p>One final important feature of aggregation functions is that they are inconsistent with the rest of SQL in a very useful way. If we add two values, and one of them is null, the result is null. By extension, if we use <code>sum</code> to add all the values in a set, and any of those values are null, the result should also be null. It’s much more useful, though, for aggregation functions to ignore null values and only combine those that are non-null. This behavior lets us write our queries as:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -313,7 +313,7 @@ Beginning SQL queries
 </TR>
 </table>
 <p>instead of always having to filter explicitly:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">min</span>(Pages) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -333,7 +333,7 @@ Beginning SQL queries
 </TR>
 </table>
 <p>Aggregating all records at once doesn’t always make sense. For example, if we want to get a breakdown of how many books are in the collection for each publisher, we cannot write:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -353,10 +353,10 @@ O'Reilly
 </TR>
 </table>
 <p>because the database manager selects a single arbitrary publisher name rather than aggregating results separately for each publisher. Since in our small example there are only ten different publishers, we could write ten queries of the form:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Faber &amp; Faber&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Faber &amp; Faber&#39;</span>;</code></pre></div>
 <p>but this would be tedious, and it wouldn’t be practical against a real-life database containing many thousands different publishers.</p>
 <p>What we need to do is tell the database manager to aggregate the number of titles for each publisher separately using a <code>GROUP BY</code> clause:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -441,7 +441,7 @@ Wiley
 </table>
 <p><code>GROUP BY</code> does exactly what its name implies: groups all the records with the same value for the specified field together so that aggregation can process each batch separately. Since all the records in each batch have the same value for <code>Publisher</code>, it no longer matters that the database manager is picking an arbitrary one to display alongside the count of <code>Title</code> values.</p>
 <p>Just as we can sort by multiple criteria at once, we can also group by multiple criteria. To get a yearly breakdown of the number of titles published by each publisher, we just add another field to the <code>GROUP BY</code> clause:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher, <span class="dt">Date</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title) <span class="kw">FROM</span> Works <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher, <span class="dt">Date</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -644,10 +644,10 @@ Wiley
 </table>
 <p>Note that we have added <code>Date</code> to the list of fields displayed, since the results wouldn’t make much sense otherwise.</p>
 <p>Let’s wrap up our collection analysis query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title), <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works 
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>   Publisher, <span class="dt">Date</span>, <span class="fu">count</span>(Title), <span class="fu">sum</span>(Pages) <span class="kw">FROM</span> Works 
 <span class="kw">WHERE</span>    Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> 
 <span class="kw">GROUP</span> <span class="kw">BY</span> Publisher, <span class="dt">Date</span> 
-<span class="kw">ORDER</span> <span class="kw">BY</span> Publisher <span class="kw">ASC</span>, <span class="dt">Date</span> <span class="kw">DESC</span>;</code></pre>
+<span class="kw">ORDER</span> <span class="kw">BY</span> Publisher <span class="kw">ASC</span>, <span class="dt">Date</span> <span class="kw">DESC</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -917,7 +917,7 @@ Wiley
 </div>
 <div class="panel-body">
 <p>The function <code>group_concat(field, separator)</code> concatenates all the values in a field using the specified separator character (or ‘,’ if the separator isn’t specified). Use this to produce a one-line list of publishers’ names, such as:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql">O<span class="st">&#39;Reilly, Wiley, Faber </span><span class="ch">&amp;amp</span><span class="st">; Faber, Belknap Press, ...</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql">O<span class="st">&#39;Reilly, Wiley, Faber </span><span class="ch">&amp;amp</span><span class="st">; Faber, Belknap Press, ...</span></code></pre></div>
 <p>Can you find a way to order the list alphabetically?</p>
 </div>
 </section>
@@ -926,8 +926,8 @@ Wiley
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

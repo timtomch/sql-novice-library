@@ -42,15 +42,15 @@
 </section>
 <p>To close, let’s have a look at how to access a database from a general-purpose programming language like Python. Other languages use almost exactly the same model: library and function names may differ, but the concepts are the same.</p>
 <p>Here’s a short Python program that selects author names from an SQLite database stored in a file called <code>swclib.db</code>:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="ch">import</span> sqlite3
-connection = sqlite3.<span class="ot">connect</span>(<span class="st">&quot;swclib.db&quot;</span>)
-cursor = connection.cursor()
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> sqlite3
+connection <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">&quot;swclib.db&quot;</span>)
+cursor <span class="op">=</span> connection.cursor()
 cursor.execute(<span class="st">&quot;SELECT personal, family FROM Authors;&quot;</span>)
-results = cursor.fetchall()
-<span class="kw">for</span> r in results:
-    <span class="dt">print</span> r
+results <span class="op">=</span> cursor.fetchall()
+<span class="cf">for</span> r <span class="op">in</span> results:
+    <span class="bu">print</span> r
 cursor.close()
-connection.close()</code></pre>
+connection.close()</code></pre></div>
 <pre class="output"><code>(Kevin E.,Kline)
 (Daniel,Kline)
 (Brand,Hunt)
@@ -61,40 +61,40 @@ connection.close()</code></pre>
 <p>The database returns the results of the query to us in response to the <code>cursor.fetchall</code> call on line 5. This result is a list with one entry for each record in the result set; if we loop over that list (line 6) and print those list entries (line 7), we can see that each one is a tuple with one element for each field we asked for.</p>
 <p>Finally, lines 8 and 9 close our cursor and our connection, since the database can only keep a limited number of these open at one time. Since establishing a connection takes time, though, we shouldn’t open a connection, do one operation, then close the connection, only to reopen it a few microseconds later to do another operation. Instead, it’s normal to create one connection that stays open for the lifetime of the program.</p>
 <p>Queries in real applications will often depend on values provided by users. For example, this function takes an author ID as a parameter and returns the name of the corresponding author in the database:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_name(database_file, author_ident):
-    query = <span class="st">&quot;SELECT personal || &#39; &#39; || family FROM Authors WHERE author_ID=&#39;&quot;</span> + author_ident + <span class="st">&quot;&#39;;&quot;</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_name(database_file, author_ident):
+    query <span class="op">=</span> <span class="st">&quot;SELECT personal || &#39; &#39; || family FROM Authors WHERE author_ID=&#39;&quot;</span> <span class="op">+</span> author_ident <span class="op">+</span> <span class="st">&quot;&#39;;&quot;</span>
 
-    connection = sqlite3.<span class="ot">connect</span>(database_file)
-    cursor = connection.cursor()
+    connection <span class="op">=</span> sqlite3.<span class="ex">connect</span>(database_file)
+    cursor <span class="op">=</span> connection.cursor()
     cursor.execute(query)
-    results = cursor.fetchall()
+    results <span class="op">=</span> cursor.fetchall()
     cursor.close()
     connection.close()
 
-    <span class="kw">return</span> results[<span class="dv">0</span>][<span class="dv">0</span>]
+    <span class="cf">return</span> results[<span class="dv">0</span>][<span class="dv">0</span>]
 
-<span class="dt">print</span> <span class="st">&quot;full name for author #20:&quot;</span>, get_name(<span class="st">&#39;swclib.db&#39;</span>, <span class="dv">20</span>)</code></pre>
+<span class="bu">print</span> <span class="st">&quot;full name for author #20:&quot;</span>, get_name(<span class="st">&#39;swclib.db&#39;</span>, <span class="dv">20</span>)</code></pre></div>
 <pre class="output"><code>full name for author #20: Ross Mistry</code></pre>
 <p>We use string concatenation on the first line of this function to construct a query containing the <code>author_ID</code> we have been given. This seems simple enough, but what happens if someone gives us this string as input?</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="dv">20</span><span class="st">&#39;; DROP TABLE Items; SELECT &#39;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="dv">20</span><span class="st">&#39;; DROP TABLE Items; SELECT &#39;</span></code></pre></div>
 <p>It looks like there’s garbage after the ID of the author, but it is very carefully chosen garbage. If we insert this string into our query, the result is:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> personal || <span class="st">&#39; &#39;</span> || family <span class="kw">FROM</span> Authors <span class="kw">WHERE</span> author_ID=<span class="st">&#39;20&#39;</span>; <span class="kw">DROP</span> <span class="kw">TABLE</span> Items; <span class="kw">SELECT</span> <span class="st">&#39;&#39;</span>;<span class="ot">&quot;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> personal || <span class="st">&#39; &#39;</span> || family <span class="kw">FROM</span> Authors <span class="kw">WHERE</span> author_ID=<span class="st">&#39;20&#39;</span>; <span class="kw">DROP</span> <span class="kw">TABLE</span> Items; <span class="kw">SELECT</span> <span class="st">&#39;&#39;</span>;<span class="ot">&quot;</span></code></pre></div>
 <p>If we execute this, it will erase one of the tables in our database.</p>
 <p>This is called an <a href="reference.html#sql-injection-attack">SQL injection attack</a>, and it has been used to attack thousands of programs over the years. In particular, many web sites that take data from users insert values directly into queries without checking them carefully first.</p>
 <p>Since a villain might try to smuggle commands into our queries in many different ways, the safest way to deal with this threat is to replace characters like quotes with their escaped equivalents, so that we can safely put whatever the user gives us inside a string. We can do this by using a <a href="reference.html#prepared-statement">prepared statement</a> instead of formatting our statements as strings. Here’s what our example program looks like if we do this:</p>
-<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_name(database_file, author_ident):
-    query = <span class="st">&quot;SELECT personal || &#39; &#39; || family FROM Authors WHERE author_ID=?;&quot;</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> get_name(database_file, author_ident):
+    query <span class="op">=</span> <span class="st">&quot;SELECT personal || &#39; &#39; || family FROM Authors WHERE author_ID=?;&quot;</span>
 
-    connection = sqlite3.<span class="ot">connect</span>(database_file)
-    cursor = connection.cursor()
+    connection <span class="op">=</span> sqlite3.<span class="ex">connect</span>(database_file)
+    cursor <span class="op">=</span> connection.cursor()
     cursor.execute(query, [author_ident])
-    results = cursor.fetchall()
+    results <span class="op">=</span> cursor.fetchall()
     cursor.close()
     connection.close()
 
-    <span class="kw">return</span> results[<span class="dv">0</span>][<span class="dv">0</span>]
+    <span class="cf">return</span> results[<span class="dv">0</span>][<span class="dv">0</span>]
 
-<span class="dt">print</span> <span class="st">&quot;full name for author #20:&quot;</span>, get_name(<span class="st">&#39;swclib.db&#39;</span>, <span class="dv">20</span>)</code></pre>
+<span class="bu">print</span> <span class="st">&quot;full name for author #20:&quot;</span>, get_name(<span class="st">&#39;swclib.db&#39;</span>, <span class="dv">20</span>)</code></pre></div>
 <pre class="output"><code>full name for author #20: Ross Mistry</code></pre>
 <p>The key changes are in the query string and the <code>execute</code> call. Instead of formatting the query ourselves, we put question marks in the query template where we want to insert values. When we call <code>execute</code>, we provide a list that contains as many values as there are question marks in the query. The library matches values to question marks in order, and translates any special characters in the values into their escaped equivalents so that they are safe to use.</p>
 <section class="challenge panel panel-success">
@@ -118,8 +118,8 @@ connection.close()</code></pre>
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>
