@@ -42,7 +42,7 @@
 </section>
 <p>Real-world data is never complete — there are always holes. Databases represent these holes using a special value called <code>null</code>. <code>null</code> is not zero, <code>False</code>, or the empty string; it is a one-of-a-kind value that means “nothing here”. Dealing with <code>null</code> requires a few special tricks and some careful thinking.</p>
 <p>To start, let’s have a look at the <code>Works</code> table. There are a total of 20 records. The page number is missing for records #2 and #26 –— for them, the <code>Pages</code> field is null:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -277,7 +277,7 @@ MySQL in a nutshell
 </TR>
 </table>
 <p>Null doesn’t behave like other values. If we select the works that have less than 300 pages:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages&lt;<span class="dv">300</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages&lt;<span class="dv">300</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -314,7 +314,7 @@ Beginning SQL queries
 </TR>
 </table>
 <p>we get two results, and if we select the ones that have 300 or more pages:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages&gt;=<span class="dv">300</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages&gt;=<span class="dv">300</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -507,11 +507,11 @@ MySQL in a nutshell
 <p>we get sixteen results. Records #2 and #16 aren’t in either set of results. The reason is that <code>NULL&lt;300</code> is neither true nor false: null means, “We don’t know,” and if we don’t know the value on the left side of a comparison, we don’t know whether the comparison is true or false. Since databases represent “don’t know” as null, the value of <code>NULL&lt;300</code> is actually NULL.</p>
 <p><code>NULL&gt;=300</code> is also null because we can’t answer to that question either. And since the only records kept by a <code>WHERE</code> are those for which the test is true, records #2 and #16 aren’t included in either set of results.</p>
 <p>Comparisons aren’t the only operations that behave this way with nulls. <code>1+NULL</code> is <code>NULL</code>, <code>5*NULL</code> is <code>NULL</code>, and so on. In particular, comparing things to null with = and != produces null:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages=NULL;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages=NULL;</code></pre></div>
 <p>produces no output, and neither does:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages!=NULL;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages!=NULL;</code></pre></div>
 <p>To check whether a value is <code>null</code> or not, we must use a special test <code>IS NULL</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NULL</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NULL</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -548,7 +548,7 @@ Microsoft SQL server 2012
 </TR>
 </table>
 <p>or its inverse <code>IS NOT NULL</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Work_ID, Title, Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Pages <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -761,7 +761,7 @@ MySQL in a nutshell
 </TR>
 </table>
 <p>Null values can cause headaches wherever they appear. For example, suppose we want to find all books about SQL that have less than 500 pages. It’s natural to write the query like this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="ot">&quot;%SQL%&quot;</span> <span class="kw">AND</span> Pages&lt;<span class="dv">500</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="ot">&quot;%SQL%&quot;</span> <span class="kw">AND</span> Pages&lt;<span class="dv">500</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -971,7 +971,7 @@ O'Reilly
 </TR>
 </table>
 <p>but this query filters omits the records where we don’t know the number of pages. Once again, the reason is that when <code>Pages</code> is <code>NULL</code>, the <code>&lt;</code> comparison produces <code>NULL</code>, so the record isn’t kept in our results. If we want to keep these records we need to add an explicit check:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="ot">&quot;%SQL%&quot;</span> <span class="kw">AND</span> (Pages&lt;<span class="dv">500</span> <span class="kw">OR</span> Pages <span class="kw">IS</span> <span class="kw">NULL</span>);</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="ot">&quot;%SQL%&quot;</span> <span class="kw">AND</span> (Pages&lt;<span class="dv">500</span> <span class="kw">OR</span> Pages <span class="kw">IS</span> <span class="kw">NULL</span>);</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1250,7 +1250,7 @@ O'Reilly
 </div>
 <div class="panel-body">
 <p>What do you expect the query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Edition <span class="kw">in</span> (<span class="ot">&quot;1st ed.&quot;</span>, <span class="kw">NULL</span>);</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Edition <span class="kw">in</span> (<span class="ot">&quot;1st ed.&quot;</span>, <span class="kw">NULL</span>);</code></pre></div>
 <p>to produce? What does it actually produce?</p>
 </div>
 </section>
@@ -1267,8 +1267,8 @@ O'Reilly
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

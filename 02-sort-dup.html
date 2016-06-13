@@ -40,7 +40,7 @@
 </div>
 </section>
 <p>Data is often redundant, so queries often return redundant information. For example, say we were interested in listing all the publishers that are represented in our catalogue. If we select the <code>Publisher</code> from the <code>Works</code> table, we get this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Publisher <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -149,7 +149,7 @@ O'Reilly
 </TR>
 </table>
 <p>We can eliminate the redundant output to make the result more readable by adding the <code>DISTINCT</code> keyword to our query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -203,7 +203,7 @@ Sams
 </TR>
 </table>
 <p>If we select more than one column (for example, both the place and publisher) then the distinct pairs of values are returned:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Place, Publisher <span class="kw">FROM</span> Works;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Place, Publisher <span class="kw">FROM</span> Works;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -312,7 +312,7 @@ O'Reilly
 </div>
 </section>
 <p>As we mentioned earlier, database records are not stored in any particular order. This means that query results aren’t necessarily sorted, and even if they are, we often want to sort them in a different way, e.g., in alphabetical order instead of the order in which they were written into the database. We can do this in SQL by adding an <code>ORDER BY</code> clause to our query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> Publisher;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> Publisher;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -366,7 +366,7 @@ Wiley
 </TR>
 </table>
 <p>By default, results are sorted in ascending order (i.e., from least to greatest or for A to Z). We can sort in the opposite order using <code>DESC</code> (for “descending”):</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> Publisher <span class="kw">DESC</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> Publisher <span class="kw">DESC</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -421,7 +421,7 @@ Apress
 </table>
 <p>(And if we want to make it clear that we’re sorting in ascending order, we can use <code>ASC</code> instead of <code>DESC</code>.)</p>
 <p>We can also sort on several fields at once. For example, this query sorts the <code>Works</code> table first by <code>Date</code> (in descending order), then by <code>Publisher</code> in ascending order:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="dt">Date</span>, Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">Date</span> <span class="kw">DESC</span>, Publisher <span class="kw">ASC</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="dt">Date</span>, Publisher <span class="kw">FROM</span> Works <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">Date</span> <span class="kw">DESC</span>, Publisher <span class="kw">ASC</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -668,8 +668,8 @@ O'Reilly
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

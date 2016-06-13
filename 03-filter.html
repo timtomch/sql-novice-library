@@ -40,7 +40,7 @@
 </div>
 </section>
 <p>One of the most powerful features of a database is the ability to <a href="reference.html#filter">filter</a> data, i.e., to select only those records that match certain criteria. For example, suppose we want to list all the books in the catalogue that have been published by Wiley. We can select these records from the <code>Works</code> table by using a <code>WHERE</code> clause in our query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="ot">&quot;Wiley&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="ot">&quot;Wiley&quot;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -249,7 +249,7 @@ Wiley
 </table>
 <p>The database manager executes this query in two stages. First, it checks at each row in the <code>Works</code> table to see which ones satisfy the <code>WHERE</code>. It then uses the column names following the <code>SELECT</code> keyword to determine what columns to display.</p>
 <p>This processing order means that we can filter records using <code>WHERE</code> based on values in columns that aren’t then displayed:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="ot">&quot;Wiley&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="ot">&quot;Wiley&quot;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -293,7 +293,7 @@ Access 2013 all-in-one
 </TR>
 </table>
 <p>We can use many other Boolean operators to filter our data. For example, we can display only titles that have been published by Wiley in 2011 or later:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span>) <span class="kw">AND</span> (Date&gt;=<span class="st">&#39;2011&#39;</span>);</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span>) <span class="kw">AND</span> (Date&gt;=<span class="st">&#39;2011&#39;</span>);</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -433,7 +433,7 @@ Wiley
 </div>
 </aside>
 <p>If we want to list all books published either by Wiley or O’Reilly, we can combine the query using <code>OR</code>. Note in passing how the apostrophe in the name O’Reilly is escaped:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -797,7 +797,7 @@ O'Reilly
 </TR>
 </table>
 <p>Alternatively, we can use <code>IN</code> to see if a value is in a specific set:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher <span class="kw">IN</span>(<span class="st">&#39;Wiley&#39;</span>,<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>);</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher <span class="kw">IN</span>(<span class="st">&#39;Wiley&#39;</span>,<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>);</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1161,7 +1161,7 @@ O'Reilly
 </TR>
 </table>
 <p>We can combine <code>AND</code> with <code>OR</code>, but we need to be careful about which operator is executed first. If we <em>don’t</em> use parentheses, we get this:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span> <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span> <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1395,7 +1395,7 @@ Wiley
 </TR>
 </table>
 <p>which is a list of the books published either by Wiley at any given time and those by O’Reilly in 2011 or later. We probably want this instead:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>) <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>) <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1552,7 +1552,7 @@ Wiley
 </TR>
 </table>
 <p>We can also filter by partial matches. For example, if we want to know something just about the site names beginning with “DR” we can use the <code>LIKE</code> keyword. The percent symbol acts as a <a href="reference.html#wildcard">wildcard</a>, matching any characters in that place. It can be used at the beginning, middle, or end of the string:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher <span class="kw">LIKE</span> <span class="ot">&quot;%y&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher <span class="kw">LIKE</span> <span class="ot">&quot;%y&quot;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1916,7 +1916,7 @@ O'Reilly
 </TR>
 </table>
 <p>Finally, we can use <code>DISTINCT</code> with <code>WHERE</code> to give a second level of filtering:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">Date</span>, Publisher <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>) <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="dt">Date</span>, Publisher <span class="kw">FROM</span> Works <span class="kw">WHERE</span> (Publisher=<span class="st">&#39;Wiley&#39;</span> <span class="kw">OR</span> Publisher=<span class="st">&#39;O</span><span class="ch">&#39;&#39;</span><span class="st">Reilly&#39;</span>) <span class="kw">AND</span> Date&gt;=<span class="dv">2011</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -1992,8 +1992,8 @@ Wiley
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>

@@ -40,7 +40,7 @@
 </section>
 <p>The library is embarking on a digitization project. In order to estimate how long it would take to scan books, we want to look up what the total number of pages for all library books are. Prior experience has shown that due to poor quality binding, up to 2% of the pages will fail to be scanned for books published by Wiley and will have to be scanned anew. The total number of pages has therefore to be adjusted accordingly for this publisher.</p>
 <p>Rather than modifying the stored data, we can do this calculation on the fly as part of our query:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fl">1.02</span>*Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher = <span class="ot">&quot;Wiley&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fl">1.02</span>*Pages <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher = <span class="ot">&quot;Wiley&quot;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -85,7 +85,7 @@
 </table>
 <p>Remember those empty cells we had in the database? Seems like one of them is showing up again here. We’ll have to deal with it later so that it doesn’t mess up our computations.</p>
 <p>When we run the query, the expression <code>1.02 * Pages</code> is evaluated for each row. Expressions can use any of the fields, all of usual arithmetic operators, and a variety of common functions. (Exactly which ones depends on which database manager is being used.) For example, knowing that scanning two pages takes exactly 13 seconds, we can compute how many hours would be necessary to scan each Wiley book. Since this is an estimate, more than one decimal place doesn’t make much sense and so we use a rounding function:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">round</span>(<span class="dv">13</span>/<span class="dv">2</span>*(<span class="fl">1.02</span>*Pages)/<span class="dv">3600</span>,<span class="dv">1</span>) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher = <span class="ot">&quot;Wiley&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Title, <span class="fu">round</span>(<span class="dv">13</span>/<span class="dv">2</span>*(<span class="fl">1.02</span>*Pages)/<span class="dv">3600</span>,<span class="dv">1</span>) <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher = <span class="ot">&quot;Wiley&quot;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -152,7 +152,7 @@ Access 2013 all-in-one
 </TR>
 </table>
 <p>We can also combine values from different fields, for example by using the string concatenation operator <code>||</code>:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Personal || <span class="ot">&quot; &quot;</span> || Family <span class="kw">FROM</span> Authors <span class="kw">LIMIT</span> <span class="dv">5</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> Personal || <span class="ot">&quot; &quot;</span> || Family <span class="kw">FROM</span> Authors <span class="kw">LIMIT</span> <span class="dv">5</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -207,7 +207,7 @@ Brett McLaughlin
 </div>
 <div class="panel-body">
 <p>The <code>UNION</code> operator combines the results of two queries:</p>
-<pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Peachpit&#39;</span> <span class="kw">UNION</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Faber &amp; Faber&#39;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Peachpit&#39;</span> <span class="kw">UNION</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> Works <span class="kw">WHERE</span> Publisher=<span class="st">&#39;Faber &amp; Faber&#39;</span>;</code></pre></div>
 <table>
 <TR>
 <TH>
@@ -410,8 +410,8 @@ Using SQLite
       </article>
       <div class="footer">
         <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/sql-novice-survey">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="https://github.com/timtomch/sql-novice-library">Source</a>
+        <a class="label swc-blue-bg" href="mailto:tom@timtom.ca">Contact</a>
         <a class="label swc-blue-bg" href="LICENSE.html">License</a>
       </div>
     </div>
